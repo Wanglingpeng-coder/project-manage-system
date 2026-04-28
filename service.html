@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>项目售后</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Noto+Sans+SC:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#020617;--surface:rgba(10,20,50,0.85);--border:rgba(0,150,255,0.15);--primary:#0088ff;--primary2:#00ccff;--accent:#0055ff;--text:#e0f4ff;--muted:rgba(255,255,255,0.4);--cyan:rgba(0,200,255,0.8);--success:#00cc66}
+body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 0%,rgba(0,100,255,0.12) 0%,transparent 50%),radial-gradient(ellipse at 80% 100%,rgba(80,0,200,0.1) 0%,transparent 50%);pointer-events:none;z-index:0}
+.grid-bg{position:fixed;inset:0;pointer-events:none;background-image:linear-gradient(rgba(0,100,255,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(0,100,255,0.02) 1px,transparent 1px);background-size:50px 50px;z-index:0}
+.stars{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.star{position:absolute;width:2px;height:2px;background:#fff;border-radius:50%;animation:twinkle var(--d,3s) infinite ease-in-out}
+@keyframes twinkle{0%,100%{opacity:.1}50%{opacity:.8}}
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:240px;background:var(--surface);border-right:1px solid var(--border);z-index:100;display:flex;flex-direction:column;backdrop-filter:blur(20px)}
+.sidebar-logo{padding:24px 20px;border-bottom:1px solid var(--border);text-align:center}
+.logo-icon{width:44px;height:44px;margin:0 auto 10px;border-radius:12px;background:linear-gradient(135deg,var(--primary),var(--primary2));display:flex;align-items:center;justify-content:center;box-shadow:0 0 20px rgba(0,150,255,0.3)}
+.logo-icon svg{width:24px;height:24px;fill:#fff}
+.logo-title{font-family:'Orbitron',sans-serif;font-size:13px;color:#fff;letter-spacing:2px;font-weight:700}
+.logo-sub{font-size:11px;color:var(--muted);margin-top:4px}
+.nav{flex:1;padding:16px 12px;overflow-y:auto}
+.nav-item{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:10px;cursor:pointer;transition:all 0.3s;font-size:14px;color:var(--muted);text-decoration:none;margin-bottom:4px;position:relative}
+.nav-item::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--primary2);opacity:0}
+.nav-item:hover{background:rgba(0,130,255,0.1);color:var(--cyan)}
+.nav-item.active{background:rgba(0,130,255,0.15);color:var(--cyan)}
+.nav-item.active::before{opacity:1}
+.nav-item svg{width:18px;height:18px;fill:currentColor;flex-shrink:0}
+.nav-badge{background:var(--primary);color:#fff;font-size:10px;border-radius:10px;padding:2px 6px;margin-left:auto;font-weight:700}
+.nav-section{margin-top:20px}
+.nav-section-title{font-size:10px;color:rgba(0,150,255,0.4);letter-spacing:2px;text-transform:uppercase;padding:4px 14px;margin-bottom:4px}
+.sidebar-footer{padding:16px 12px;border-top:1px solid var(--border)}
+.user-info{display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(0,80,150,0.2);border-radius:10px;cursor:pointer}
+.user-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--primary2));display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;font-family:'Orbitron',sans-serif;flex-shrink:0}
+.user-details{overflow:hidden}
+.user-name{font-size:13px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.user-role{font-size:10px;color:var(--muted)}
+.main{margin-left:240px;min-height:100vh;position:relative;z-index:1}
+.topbar{position:sticky;top:0;z-index:50;background:rgba(2,6,23,0.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 32px;display:flex;align-items:center;justify-content:space-between;height:64px}
+.topbar-title{font-family:'Orbitron',sans-serif;font-size:16px;color:#fff;letter-spacing:2px}
+.topbar-right{display:flex;align-items:center;gap:20px}
+.topbar-time{font-size:12px;color:var(--muted);font-family:'Orbitron',sans-serif}
+.topbar-btn{background:rgba(0,100,255,0.15);border:1px solid rgba(0,150,255,0.2);border-radius:8px;padding:8px 16px;cursor:pointer;color:var(--cyan);font-size:12px;transition:all 0.3s;font-family:'Noto Sans SC',sans-serif}
+.topbar-btn:hover{background:rgba(0,130,255,0.3)}
+.content{padding:32px}
+.page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
+.page-title{font-family:'Orbitron',sans-serif;font-size:20px;font-weight:700;color:#fff;letter-spacing:2px}
+.page-subtitle{font-size:13px;color:var(--muted);margin-top:4px}
+.action-row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.btn{background:linear-gradient(135deg,var(--accent),var(--primary));border:none;border-radius:10px;padding:10px 20px;color:#fff;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.3s;font-family:'Noto Sans SC',sans-serif;display:inline-flex;align-items:center;gap:6px;text-decoration:none}
+.btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,100,255,0.4)}
+.btn-outline{background:rgba(0,150,255,0.1);border:1px solid rgba(0,150,255,0.3);color:var(--cyan)}
+.btn-outline:hover{background:rgba(0,150,255,0.2)}
+.stats-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.stat-mini{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 20px;backdrop-filter:blur(10px)}
+.stat-mini-label{font-size:11px;color:var(--muted);margin-bottom:4px}
+.stat-mini-val{font-family:'Orbitron',sans-serif;font-size:22px;font-weight:700;color:#fff}
+.filter-bar{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin-bottom:20px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.filter-input{background:rgba(0,50,100,0.3);border:1px solid rgba(0,150,255,0.2);border-radius:8px;padding:8px 14px;color:var(--text);font-size:13px;outline:none;transition:all 0.3s;font-family:'Noto Sans SC',sans-serif;flex:1;min-width:160px}
+.filter-input:focus{border-color:var(--primary2)}
+.filter-input::placeholder{color:rgba(255,255,255,0.2)}
+select.filter-input{cursor:pointer}
+.table-wrap{background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden;backdrop-filter:blur(10px)}
+table{width:100%;border-collapse:collapse}
+thead th{background:rgba(0,80,150,0.2);padding:14px 16px;text-align:left;font-size:12px;font-weight:700;color:var(--cyan);letter-spacing:1px;border-bottom:1px solid var(--border);white-space:nowrap}
+tbody tr{transition:background 0.2s;border-bottom:1px solid rgba(0,150,255,0.06)}
+tbody tr:hover{background:rgba(0,80,150,0.15)}
+tbody td{padding:12px 16px;font-size:13px;color:var(--text);vertical-align:middle}
+tbody td:first-child{color:var(--muted);font-size:12px}
+.action-btns{display:flex;gap:6px}
+.action-btn{background:rgba(0,100,255,0.15);border:1px solid rgba(0,100,255,0.25);border-radius:6px;padding:5px 10px;color:var(--cyan);font-size:11px;cursor:pointer;transition:all 0.2s;font-family:'Noto Sans SC',sans-serif}
+.action-btn:hover{background:rgba(0,100,255,0.3)}
+.action-btn.danger{background:rgba(255,60,80,0.15);border-color:rgba(255,60,80,0.3);color:#ff4466}
+.action-btn.danger:hover{background:rgba(255,60,80,0.3)}
+.empty-row td{text-align:center;padding:60px 20px;color:var(--muted);font-size:13px}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:1000;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.modal-overlay.show{display:flex}
+.modal{background:rgba(10,20,50,0.98);border:1px solid rgba(0,150,255,0.2);border-radius:20px;padding:32px;width:90%;max-width:700px;max-height:90vh;overflow-y:auto;box-shadow:0 0 60px rgba(0,100,255,0.2)}
+.modal-title{font-family:'Orbitron',sans-serif;font-size:16px;color:#fff;margin-bottom:24px;letter-spacing:2px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.form-group{margin-bottom:16px}
+.form-group.full{grid-column:1/-1}
+.form-group label{display:block;font-size:12px;color:var(--cyan);margin-bottom:8px;letter-spacing:1px}
+.form-input{width:100%;padding:12px 14px;background:rgba(0,50,100,0.3);border:1px solid rgba(0,150,255,0.2);border-radius:10px;color:var(--text);font-size:13px;outline:none;transition:all 0.3s;font-family:'Noto Sans SC',sans-serif}
+.form-input:focus{border-color:var(--primary2);box-shadow:0 0 10px rgba(0,150,255,0.15)}
+.form-input::placeholder{color:rgba(255,255,255,0.2)}
+textarea.form-input{resize:vertical;min-height:80px}
+.modal-actions{display:flex;justify-content:flex-end;gap:12px;margin-top:24px;padding-top:20px;border-top:1px solid var(--border)}
+.toast{position:fixed;top:30px;left:50%;transform:translateX(-50%) translateY(-100px);padding:12px 24px;background:rgba(10,20,50,0.95);border:1px solid;border-radius:12px;z-index:9999;font-size:13px;letter-spacing:1px;transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1);backdrop-filter:blur(10px);min-width:240px;text-align:center}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast.success{border-color:rgba(0,255,150,0.5);color:#00ffaa}
+.toast.error{border-color:rgba(255,60,80,0.5);color:#ff4466}
+.pagination{display:flex;align-items:center;justify-content:center;gap:8px;padding:20px}
+.page-btn{background:rgba(0,100,255,0.15);border:1px solid rgba(0,150,255,0.2);border-radius:8px;padding:8px 14px;color:var(--cyan);font-size:12px;cursor:pointer;transition:all 0.2s;font-family:'Noto Sans SC',sans-serif}
+.page-btn:hover,.page-btn.active{background:rgba(0,100,255,0.3)}
+.page-btn.active{background:var(--primary);border-color:var(--primary);color:#fff}
+@media(max-width:1100px){.sidebar{width:64px}.sidebar-logo .logo-title,.sidebar-logo .logo-sub,.nav-section-title,.nav-item span,.user-details,.nav-badge{display:none}.main{margin-left:64px}.form-grid{grid-template-columns:1fr}}
+@media(max-width:768px){.sidebar{display:none}.main{margin-left:0}.content{padding:16px}.stats-bar{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="stars" id="stars"></div>
+<div class="grid-bg"></div>
+
+<div class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+    <div class="logo-title">PRO-MANAGE</div>
+    <div class="logo-sub">智能管理平台</div>
+  </div>
+  <nav class="nav">
+    <div class="nav-section">
+      <div class="nav-section-title">主导航</div>
+      <a href="dashboard.html" class="nav-item"><svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg><span>控制台</span></a>
+      <a href="quality.html" class="nav-item"><svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg><span>质保金管理</span></a>
+      <a href="visit.html" class="nav-item"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg><span>项目回访</span></a>
+      <a href="service.html" class="nav-item active"><svg viewBox="0 0 24 24"><path d="M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.7C.4 7.1.9 10.1 2.9 12.1c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.3-2.3c.5-.4.5-1.1.1-1.4z"/></svg><span>项目售后</span></a>
+      <a href="inspection.html" class="nav-item"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14l-5-5 1.41-1.41L12 14.17l4.59-4.58L18 11l-6 6z"/></svg><span>项目巡检</span></a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-title">系统</div>
+      <a href="admin.html" class="nav-item" id="navAdmin"><svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg><span>管理员</span><span class="nav-badge">ADMIN</span></a>
+    </div>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="user-info" onclick="logout()">
+      <div class="user-avatar" id="userAvatar">A</div>
+      <div class="user-details">
+        <div class="user-name" id="userName">admin</div>
+        <div class="user-role" id="userRole">超级管理员</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-title">项目售后</div>
+    <div class="topbar-right">
+      <div class="topbar-time" id="topbarTime"></div>
+      <button class="topbar-btn" onclick="location.href='dashboard.html'">← 控制台</button>
+      <button class="topbar-btn" onclick="logout()">退出登录</button>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="page-header">
+      <div><div class="page-title">🔧 项目售后</div><div class="page-subtitle">记录项目售后问题与处理过程，支持新增、编辑、删除操作</div></div>
+      <div class="action-row"><button class="btn" onclick="exportData()">📥 导出</button><button class="btn" onclick="openAddModal()">+ 新增售后</button></div>
+    </div>
+
+    <div class="stats-bar" id="statsBar"></div>
+
+    <div class="filter-bar">
+      <input class="filter-input" placeholder="搜索项目名称/客户名称..." id="searchInput" oninput="renderTable()">
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>序号</th><th>项目名称</th><th>客户名称</th><th>售后类型</th><th>联系人</th><th>电话</th><th>问题详情</th><th>问题时间</th><th>处理过程</th><th>解决时间</th><th>操作</th></tr></thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+    </div>
+    <div class="pagination" id="pagination"></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <div class="modal-title" id="modalTitle">新增售后记录</div>
+    <form id="recordForm" onsubmit="saveRecord(event)">
+      <input type="hidden" id="editId">
+      <div class="form-grid">
+        <div class="form-group full"><label>项目名称 *</label><input class="form-input" id="f_projectName" required placeholder="项目名称"></div>
+        <div class="form-group"><label>客户名称</label><input class="form-input" id="f_customerName" placeholder="客户名称"></div>
+        <div class="form-group"><label>售后类型</label><input class="form-input" id="f_serviceType" placeholder="如：现场售后/远程"></div>
+        <div class="form-group"><label>客户联系人</label><input class="form-input" id="f_contact" placeholder="联系人"></div>
+        <div class="form-group"><label>联系电话</label><input class="form-input" id="f_phone" placeholder="联系电话"></div>
+        <div class="form-group"><label>问题出现时间</label><input class="form-input" id="f_issueTime" placeholder="如：2025.10.3"></div>
+        <div class="form-group full"><label>售后问题详情</label><input class="form-input" id="f_issueDetail" placeholder="问题详情"></div>
+        <div class="form-group full"><label>售后处理过程记录</label><textarea class="form-input" id="f_processRecord" placeholder="处理过程记录"></textarea></div>
+        <div class="form-group"><label>问题解决时间</label><input class="form-input" id="f_solveTime" placeholder="如：2025.10.6"></div>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-outline" onclick="closeModal()">取消</button>
+        <button type="submit" class="btn">保存记录</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const FIELDS=['projectName','customerName','serviceType','contact','phone','issueDetail','issueTime','processRecord','solveTime'];
+const PAGE_SIZE=10;
+let currentPage=1;
+let allData=[];
+
+function checkAuth(){
+  const u=JSON.parse(localStorage.getItem('sys_current_user')||'null');
+  if(!u){location.href='index.html';return;}
+  document.getElementById('userName').textContent=u.nickname||u.username;
+  document.getElementById('userRole').textContent=u.role==='super'?'超级管理员':'管理员';
+  document.getElementById('userAvatar').textContent=(u.nickname||u.username).charAt(0).toUpperCase();
+  if(u.role!=='super')document.getElementById('navAdmin').style.display='none';
+}
+function logout(){localStorage.removeItem('sys_current_user');location.href='index.html';}
+function showToast(msg,type='success'){const t=document.getElementById('toast');t.textContent=msg;t.className='toast '+type+(type==='success'?' success':' error');setTimeout(()=>t.classList.add('show'),10);setTimeout(()=>t.classList.remove('show'),2500);}
+function getData(){return JSON.parse(localStorage.getItem('sys_service')||'[]');}
+function saveData(arr){localStorage.setItem('sys_service',JSON.stringify(arr));}
+
+function buildStats(){
+  const d=getData();
+  document.getElementById('statsBar').innerHTML=`
+    <div class="stat-mini"><div class="stat-mini-label">售后记录总数</div><div class="stat-mini-val">${d.length}</div></div>
+    <div class="stat-mini"><div class="stat-mini-label">涉及项目数</div><div class="stat-mini-val" style="color:var(--cyan)">${new Set(d.map(x=>x.projectName)).size}</div></div>
+    <div class="stat-mini"><div class="stat-mini-label">现场售后</div><div class="stat-mini-val" style="color:#aa44ff">${d.filter(x=>x.serviceType==='现场售后').length}</div></div>
+    <div class="stat-mini"><div class="stat-mini-label">远程售后</div><div class="stat-mini-val" style="color:#00cc66">${d.filter(x=>x.serviceType==='远程').length}</div></div>`;
+}
+
+function renderTable(){
+  const kw=document.getElementById('searchInput').value.trim().toLowerCase();
+  allData=getData().filter(x=>!kw||(x.projectName||'').toLowerCase().includes(kw)||(x.customerName||'').toLowerCase().includes(kw)).sort((a,b)=>(b.id||0)-(a.id||0));
+  const tp=Math.max(1,Math.ceil(allData.length/PAGE_SIZE));
+  if(currentPage>tp)currentPage=tp;
+  const pd=allData.slice((currentPage-1)*PAGE_SIZE,currentPage*PAGE_SIZE);
+  document.getElementById('tableBody').innerHTML=pd.length?pd.map(x=>`<tr>
+    <td>${x.id}</td><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${x.projectName}">${x.projectName}</td>
+    <td>${x.customerName||'-'}</td><td>${x.serviceType||'-'}</td><td>${x.contact||'-'}</td><td>${x.phone||'-'}</td>
+    <td>${x.issueDetail||'-'}</td><td>${x.issueTime||'-'}</td><td style="max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${x.processRecord}">${x.processRecord||'-'}</td><td>${x.solveTime||'-'}</td>
+    <td><div class="action-btns"><button class="action-btn" onclick="editRecord(${x.id})">编辑</button><button class="action-btn danger" onclick="delRecord(${x.id})">删除</button></div></td>
+  </tr>`).join(''):'<tr class="empty-row"><td colspan="11">暂无售后记录</td></tr>';
+  buildPagination();
+}
+
+function buildPagination(){
+  const tp=Math.max(1,Math.ceil(allData.length/PAGE_SIZE));
+  if(tp<=1){document.getElementById('pagination').innerHTML='';return;}
+  document.getElementById('pagination').innerHTML=Array.from({length:tp},(_,i)=>`<button class="page-btn ${i+1===currentPage?'active':''}" onclick="goPage(${i+1})">${i+1}</button>`).join('');
+}
+function goPage(n){currentPage=n;renderTable();}
+function openAddModal(){document.getElementById('modalTitle').textContent='新增售后记录';document.getElementById('recordForm').reset();document.getElementById('editId').value='';document.getElementById('modal').classList.add('show');}
+function editRecord(id){const d=getData().find(x=>x.id===id);if(!d)return;document.getElementById('modalTitle').textContent='编辑售后记录';document.getElementById('editId').value=id;FIELDS.forEach(f=>{const el=document.getElementById('f_'+f);if(el)el.value=d[f]||''});document.getElementById('modal').classList.add('show');}
+function closeModal(){document.getElementById('modal').classList.remove('show');}
+function saveRecord(e){e.preventDefault();const id=document.getElementById('editId').value;const rec={};FIELDS.forEach(f=>{const el=document.getElementById('f_'+f);rec[f]=el?el.value:''});rec.id=id?+id:getMaxId();const d=getData();if(id){const idx=d.findIndex(x=>x.id===+id);if(idx>-1)d[idx]={...d[idx],...rec};}else d.unshift(rec);saveData(d);closeModal();buildStats();renderTable();showToast(id?'记录已更新':'新增成功');}
+function getMaxId(){const d=getData();return d.length?Math.max(...d.map(x=>x.id||0))+1:1;}
+function delRecord(id){if(!confirm('确认删除这条记录？'))return;saveData(getData().filter(x=>x.id!==id));buildStats();renderTable();showToast('已删除','error');}
+function exportData(){const d=getData();const csv=['序号,项目名称,客户名称,售后类型,联系人,电话,问题详情,问题时间,处理过程,解决时间'];d.forEach(x=>{csv.push(`${x.id||''},"${x.projectName||''}","${x.customerName||''}","${x.serviceType||''}","${x.contact||''}","${x.phone||''}","${x.issueDetail||''}","${x.issueTime||''}","${x.processRecord||''}","${x.solveTime||''}"`);});const blob=new Blob([csv.join('\n')],{type:'text/csv;charset=utf-8;'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='项目售后.csv';a.click();showToast('导出成功');}
+function updateTime(){const now=new Date();document.getElementById('topbarTime').textContent=now.getFullYear()+'/'+(now.getMonth()+1).toString().padStart(2,'0')+'/'+now.getDate().toString().padStart(2,'0')+'  '+now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0');}
+function makeStars(){const el=document.getElementById('stars');for(let i=0;i<60;i++){const s=document.createElement('div');s.className='star';s.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${2+Math.random()*4}s;animation-delay:${Math.random()*4}s`;el.appendChild(s);}}
+window.addEventListener('DOMContentLoaded',()=>{checkAuth();makeStars();buildStats();renderTable();updateTime();setInterval(updateTime,30000);});
+</script>
+</body>
+</html>
