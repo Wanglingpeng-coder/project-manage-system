@@ -4,319 +4,319 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>管理员后台</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Noto+Sans+SC:wght@300;400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--bg:#020617;--surface:rgba(10,20,50,0.85);--border:rgba(0,150,255,0.15);--primary:#0088ff;--primary2:#00ccff;--accent:#0055ff;--text:#e0f4ff;--muted:rgba(255,255,255,0.4);--cyan:rgba(0,200,255,0.8);--success:#00cc66;--danger:#ff4466}
-body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
-body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 0%,rgba(0,100,255,0.12) 0%,transparent 50%),radial-gradient(ellipse at 80% 100%,rgba(80,0,200,0.1) 0%,transparent 50%);pointer-events:none;z-index:0}
-.grid-bg{position:fixed;inset:0;pointer-events:none;background-image:linear-gradient(rgba(0,100,255,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(0,100,255,0.02) 1px,transparent 1px);background-size:50px 50px;z-index:0}
-.stars{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
-.star{position:absolute;width:2px;height:2px;background:#fff;border-radius:50%;animation:twinkle var(--d,3s) infinite ease-in-out}
-@keyframes twinkle{0%,100%{opacity:.1}50%{opacity:.8}}
-.sidebar{position:fixed;left:0;top:0;bottom:0;width:240px;background:var(--surface);border-right:1px solid var(--border);z-index:100;display:flex;flex-direction:column;backdrop-filter:blur(20px)}
-.sidebar-logo{padding:24px 20px;border-bottom:1px solid var(--border);text-align:center}
-.logo-icon{width:44px;height:44px;margin:0 auto 10px;border-radius:12px;background:linear-gradient(135deg,var(--primary),var(--primary2));display:flex;align-items:center;justify-content:center;box-shadow:0 0 20px rgba(0,150,255,0.3)}
-.logo-icon svg{width:24px;height:24px;fill:#fff}
-.logo-title{font-family:'Orbitron',sans-serif;font-size:13px;color:#fff;letter-spacing:2px;font-weight:700}
-.logo-sub{font-size:11px;color:var(--muted);margin-top:4px}
-.nav{flex:1;padding:16px 12px;overflow-y:auto}
-.nav-item{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:10px;cursor:pointer;transition:all 0.3s;font-size:14px;color:var(--muted);text-decoration:none;margin-bottom:4px;position:relative}
-.nav-item::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--primary2);opacity:0}
-.nav-item:hover{background:rgba(0,130,255,0.1);color:var(--cyan)}
-.nav-item.active{background:rgba(0,130,255,0.15);color:var(--cyan)}
-.nav-item.active::before{opacity:1}
-.nav-item svg{width:18px;height:18px;fill:currentColor;flex-shrink:0}
-.nav-badge{background:var(--primary);color:#fff;font-size:10px;border-radius:10px;padding:2px 6px;margin-left:auto;font-weight:700}
-.nav-section{margin-top:20px}
-.nav-section-title{font-size:10px;color:rgba(0,150,255,0.4);letter-spacing:2px;text-transform:uppercase;padding:4px 14px;margin-bottom:4px}
-.sidebar-footer{padding:16px 12px;border-top:1px solid var(--border)}
-.user-info{display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(0,80,150,0.2);border-radius:10px;cursor:pointer}
-.user-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--primary2));display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;font-family:'Orbitron',sans-serif;flex-shrink:0}
-.user-details{overflow:hidden}
-.user-name{font-size:13px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.user-role{font-size:10px;color:var(--muted)}
-.main{margin-left:240px;min-height:100vh;position:relative;z-index:1}
-.topbar{position:sticky;top:0;z-index:50;background:rgba(2,6,23,0.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 32px;display:flex;align-items:center;justify-content:space-between;height:64px}
-.topbar-title{font-family:'Orbitron',sans-serif;font-size:16px;color:#fff;letter-spacing:2px}
-.topbar-right{display:flex;align-items:center;gap:20px}
-.topbar-time{font-size:12px;color:var(--muted);font-family:'Orbitron',sans-serif}
-.topbar-btn{background:rgba(0,100,255,0.15);border:1px solid rgba(0,150,255,0.2);border-radius:8px;padding:8px 16px;cursor:pointer;color:var(--cyan);font-size:12px;transition:all 0.3s;font-family:'Noto Sans SC',sans-serif}
-.topbar-btn:hover{background:rgba(0,130,255,0.3)}
-.content{padding:32px}
-.page-title{font-family:'Orbitron',sans-serif;font-size:20px;font-weight:700;color:#fff;letter-spacing:2px;margin-bottom:8px}
-.page-subtitle{font-size:13px;color:var(--muted);margin-bottom:28px}
-.admin-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px}
-.admin-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px;backdrop-filter:blur(10px)}
-.admin-card-title{font-size:15px;font-weight:700;color:#fff;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;padding-bottom:16px;border-bottom:1px solid var(--border)}
-.role-badge{display:inline-flex;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600}
-.role-super{background:linear-gradient(135deg,rgba(255,180,0,0.2),rgba(255,120,0,0.2));color:#ffaa00;border:1px solid rgba(255,180,0,0.3)}
-.role-admin{background:rgba(0,150,255,0.15);color:var(--cyan);border:1px solid rgba(0,150,255,0.3)}
-.user-list-item{display:flex;align-items:center;gap:12px;padding:14px 12px;background:rgba(0,50,100,0.15);border-radius:10px;margin-bottom:8px;border:1px solid rgba(0,150,255,0.06);transition:all 0.2s}
-.user-list-item:hover{border-color:rgba(0,150,255,0.2)}
-.user-list-item .u-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--primary2));display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:#fff;font-family:'Orbitron',sans-serif;flex-shrink:0}
-.user-list-item .u-info{flex:1;overflow:hidden}
-.user-list-item .u-name{font-size:14px;font-weight:600;color:#fff;margin-bottom:2px}
-.user-list-item .u-meta{font-size:11px;color:var(--muted)}
-.user-list-item .u-actions{display:flex;gap:6px}
-.action-btn{background:rgba(0,100,255,0.15);border:1px solid rgba(0,100,255,0.25);border-radius:6px;padding:5px 10px;color:var(--cyan);font-size:11px;cursor:pointer;transition:all 0.2s;font-family:'Noto Sans SC',sans-serif}
-.action-btn:hover{background:rgba(0,100,255,0.3)}
-.action-btn.danger{background:rgba(255,60,80,0.15);border-color:rgba(255,60,80,0.3);color:#ff4466}
-.action-btn.danger:hover{background:rgba(255,60,80,0.3)}
-.btn{background:linear-gradient(135deg,var(--accent),var(--primary));border:none;border-radius:10px;padding:10px 20px;color:#fff;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.3s;font-family:'Noto Sans SC',sans-serif;display:inline-flex;align-items:center;gap:6px}
-.btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,100,255,0.4)}
-.btn-outline{background:rgba(0,150,255,0.1);border:1px solid rgba(0,150,255,0.3);color:var(--cyan)}
-.btn-outline:hover{background:rgba(0,150,255,0.2)}
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:1000;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
-.modal-overlay.show{display:flex}
-.modal{background:rgba(10,20,50,0.98);border:1px solid rgba(0,150,255,0.2);border-radius:20px;padding:32px;width:90%;max-width:480px;max-height:90vh;overflow-y:auto;box-shadow:0 0 60px rgba(0,100,255,0.2)}
-.modal-title{font-family:'Orbitron',sans-serif;font-size:16px;color:#fff;margin-bottom:24px;letter-spacing:2px;padding-bottom:16px;border-bottom:1px solid var(--border)}
-.form-group{margin-bottom:16px}
-.form-group label{display:block;font-size:12px;color:var(--cyan);margin-bottom:8px;letter-spacing:1px}
-.form-input{width:100%;padding:12px 14px;background:rgba(0,50,100,0.3);border:1px solid rgba(0,150,255,0.2);border-radius:10px;color:var(--text);font-size:13px;outline:none;transition:all 0.3s;font-family:'Noto Sans SC',sans-serif}
-.form-input:focus{border-color:var(--primary2)}
-.form-input::placeholder{color:rgba(255,255,255,0.2)}
-select.form-input{background:rgba(0,50,100,0.3);cursor:pointer}
-.modal-actions{display:flex;justify-content:flex-end;gap:12px;margin-top:24px;padding-top:20px;border-top:1px solid var(--border)}
-.toast{position:fixed;top:30px;left:50%;transform:translateX(-50%) translateY(-100px);padding:12px 24px;background:rgba(10,20,50,0.95);border:1px solid;border-radius:12px;z-index:9999;font-size:13px;letter-spacing:1px;transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1);backdrop-filter:blur(10px);min-width:240px;text-align:center}
-.toast.show{transform:translateX(-50%) translateY(0)}
-.toast.success{border-color:rgba(0,255,150,0.5);color:#00ffaa}
-.toast.error{border-color:rgba(255,60,80,0.5);color:#ff4466}
-.log-item{padding:10px 0;border-bottom:1px solid rgba(0,150,255,0.06);font-size:12px}
-.log-item:last-child{border-bottom:none}
-.log-time{color:var(--muted);margin-bottom:2px;font-family:'Orbitron',sans-serif;font-size:10px}
-.log-success{color:#00cc66}
-.log-fail{color:#ff4466}
-.info-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px}
-.info-box{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;text-align:center;backdrop-filter:blur(10px)}
-.info-box .info-num{font-family:'Orbitron',sans-serif;font-size:28px;font-weight:900;color:#fff}
-.info-box .info-label{font-size:11px;color:var(--muted);margin-top:4px}
-.warning-box{background:rgba(255,180,0,0.08);border:1px solid rgba(255,180,0,0.2);border-radius:12px;padding:16px;margin-bottom:16px;font-size:13px;color:#ffaa00}
-.warning-box strong{display:block;margin-bottom:6px}
-@media(max-width:1100px){.sidebar{width:64px}.sidebar-logo .logo-title,.sidebar-logo .logo-sub,.nav-section-title,.nav-item span,.user-details,.nav-badge{display:none}.main{margin-left:64px}.admin-grid{grid-template-columns:1fr}.info-grid{grid-template-columns:1fr 1fr}}
-@media(max-width:768px){.sidebar{display:none}.main{margin-left:0}.content{padding:16px}}
+body{font-family:'Inter','PingFang SC','Microsoft YaHei',sans-serif;background:#f0f2f5;color:#1a1a2e;min-height:100vh}
+.topbar{background:#fff;padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #e5e7eb;position:sticky;top:0;z-index:100}
+.topbar-logo{display:flex;align-items:center;gap:10px}
+.topbar-logo-icon{width:34px;height:34px;background:#64748b;border-radius:8px;display:flex;align-items:center;justify-content:center}
+.topbar-logo-icon svg{width:18px;height:18px;fill:#fff}
+.topbar-logo h1{font-size:15px;font-weight:700}
+.topbar-right{display:flex;align-items:center;gap:16px}
+.topbar-user{display:flex;align-items:center;gap:8px;font-size:13px;color:#6b7280;font-weight:500}
+.topbar-user span{width:32px;height:32px;background:#f1f5f9;color:#64748b;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:600}
+.logout-btn{padding:7px 14px;background:#f3f4f6;color:#374151;border:1px solid #e5e7eb;border-radius:6px;font-size:13px;cursor:pointer;font-weight:500;transition:background .2s}
+.logout-btn:hover{background:#e5e7eb}
+.layout{display:flex;min-height:calc(100vh - 60px)}
+.sidebar{width:200px;background:#fff;border-right:1px solid #e5e7eb;padding:20px 0;flex-shrink:0}
+.nav-section{margin-bottom:4px}
+.nav-label{font-size:10px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:.8px;padding:8px 16px 4px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 16px;font-size:14px;color:#374151;font-weight:500;cursor:pointer;text-decoration:none;transition:background .15s,color .15s;border-radius:6px;margin:1px 8px}
+.nav-item:hover{background:#f3f4f6;color:#1a1a2e}
+.nav-item.active{background:#f1f5f9;color:#64748b;font-weight:600}
+.nav-item svg{width:16px;height:16px;fill:currentColor;flex-shrink:0}
+.nav-divider{height:1px;background:#e5e7eb;margin:12px 16px}
+.main{flex:1;padding:24px;overflow-x:auto}
+.page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+.page-title{font-size:20px;font-weight:700}
+.btn{padding:8px 16px;border-radius:7px;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:background .2s,transform .1s}
+.btn:active{transform:scale(.98)}
+.btn-slate{background:#64748b;color:#fff}
+.btn-slate:hover{background:#475569}
+.btn-outline{background:#fff;color:#374151;border:1px solid #e5e7eb}
+.btn-outline:hover{background:#f3f4f6}
+.btn-danger{background:#dc2626;color:#fff}
+.btn-danger:hover{background:#b91c1c}
+.card{background:#fff;border-radius:12px;border:1px solid #e5e7eb;margin-bottom:16px}
+.card-header{padding:16px 20px;border-bottom:1px solid #f3f4f6;display:flex;align-items:center;justify-content:space-between}
+.card-title{font-size:14px;font-weight:700;color:#1a1a2e}
+.card-body{padding:20px}
+.card-body p{font-size:13px;color:#6b7280;line-height:1.8}
+table{width:100%;border-collapse:collapse}
+th{font-size:11px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:.5px;padding:10px 14px;text-align:left;background:#fafafa;border-bottom:1px solid #e5e7eb;white-space:nowrap}
+td{padding:11px 14px;font-size:13px;color:#374151;border-bottom:1px solid #f3f4f6}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#fafafa}
+.badge{display:inline-block;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:600}
+.badge-slate{background:#f1f5f9;color:#64748b}
+.badge-green{background:#f0fdf4;color:#16a34a}
+.badge-red{background:#fef2f2;color:#dc2626}
+.action-btn{padding:4px 10px;border-radius:5px;font-size:12px;font-weight:600;cursor:pointer;border:none;transition:background .2s}
+.action-edit{background:#f1f5f9;color:#64748b}
+.action-edit:hover{background:#e2e8f0}
+.action-del{background:#fef2f2;color:#dc2626;margin-left:4px}
+.action-del:hover{background:#fee2e2}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);display:none;align-items:center;justify-content:center;z-index:1000;padding:20px}
+.modal-overlay.active{display:flex}
+.modal{background:#fff;border-radius:14px;width:100%;max-width:440px;box-shadow:0 20px 60px rgba(0,0,0,.15)}
+.modal-header{padding:18px 24px;border-bottom:1px solid #f3f4f6;display:flex;align-items:center;justify-content:space-between}
+.modal-title{font-size:16px;font-weight:700}
+.modal-close{width:28px;height:28px;border-radius:6px;border:none;background:#f3f4f6;color:#6b7280;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center}
+.modal-body{padding:20px 24px}
+.modal-footer{padding:16px 24px;border-top:1px solid #f3f4f6;display:flex;justify-content:flex-end;gap:8px}
+.form-group{margin-bottom:14px}
+.form-label{font-size:12px;font-weight:600;color:#374151;margin-bottom:5px;display:block}
+.form-input,.form-select{width:100%;padding:9px 12px;border:1.5px solid #e5e7eb;border-radius:7px;font-size:13px;color:#1a1a2e;background:#fafafa;outline:none;transition:border-color .2s,background .2s}
+.form-input:focus,.form-select:focus{border-color:#64748b;background:#fff;box-shadow:0 0 0 3px rgba(100,116,139,.08)}
+.info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:16px}
+.info-card{background:#fafafa;border-radius:8px;padding:14px 16px;border:1px solid #f3f4f6}
+.info-label{font-size:11px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.info-value{font-size:22px;font-weight:700;color:#1a1a2e}
+.empty-state{text-align:center;padding:48px 20px;color:#9ca3af}
 </style>
 </head>
 <body>
-<div class="stars" id="stars"></div>
-<div class="grid-bg"></div>
-
-<div class="sidebar">
-  <div class="sidebar-logo">
-    <div class="logo-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
-    <div class="logo-title">PRO-MANAGE</div>
-    <div class="logo-sub">智能管理平台</div>
+<div class="topbar">
+  <div class="topbar-logo">
+    <div class="topbar-logo-icon">
+      <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+    </div>
+    <h1>管理员后台</h1>
   </div>
-  <nav class="nav">
-    <div class="nav-section">
-      <div class="nav-section-title">主导航</div>
-      <a href="dashboard.html" class="nav-item"><svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg><span>控制台</span></a>
-      <a href="quality.html" class="nav-item"><svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg><span>质保金管理</span></a>
-      <a href="visit.html" class="nav-item"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg><span>项目回访</span></a>
-      <a href="service.html" class="nav-item"><svg viewBox="0 0 24 24"><path d="M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.7C.4 7.1.9 10.1 2.9 12.1c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.3-2.3c.5-.4.5-1.1.1-1.4z"/></svg><span>项目售后</span></a>
-      <a href="inspection.html" class="nav-item"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14l-5-5 1.41-1.41L12 14.17l4.59-4.58L18 11l-6 6z"/></svg><span>项目巡检</span></a>
-    </div>
-    <div class="nav-section">
-      <div class="nav-section-title">系统</div>
-      <a href="admin.html" class="nav-item active"><svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg><span>管理员</span><span class="nav-badge">ADMIN</span></a>
-    </div>
-  </nav>
-  <div class="sidebar-footer">
-    <div class="user-info" onclick="logout()">
-      <div class="user-avatar" id="userAvatar">A</div>
-      <div class="user-details">
-        <div class="user-name" id="userName">admin</div>
-        <div class="user-role" id="userRole">超级管理员</div>
-      </div>
-    </div>
+  <div class="topbar-right">
+    <div class="topbar-user"><span>A</span><span id="showUser">admin</span></div>
+    <button class="logout-btn" onclick="logout()">退出登录</button>
   </div>
 </div>
-
-<div class="main">
-  <div class="topbar">
-    <div class="topbar-title">管理员后台</div>
-    <div class="topbar-right">
-      <div class="topbar-time" id="topbarTime"></div>
-      <button class="topbar-btn" onclick="location.href='dashboard.html'">← 控制台</button>
-      <button class="topbar-btn" onclick="logout()">退出登录</button>
+<div class="layout">
+  <div class="sidebar">
+    <div class="nav-section">
+      <div class="nav-label">主导航</div>
+      <a href="dashboard.html" class="nav-item">
+        <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+        仪表盘
+      </a>
+      <div class="nav-label">业务模块</div>
+      <a href="service.html" class="nav-item">
+        <svg viewBox="0 0 24 24"><path d="M21.41 11.58l-9-9C12.05 2.22 11.55 2 11 2H4c-1.1 0-2 .9-2 2v7c0 .55.22 1.05.59 1.42l9 9c.36.36.86.58 1.41.58.55 0 1.05-.22 1.41-.59l7-7c.37-.36.59-.86.59-1.41 0-.55-.23-1.06-.59-1.42z"/></svg>
+        售后管理
+      </a>
+      <a href="visit.html" class="nav-item">
+        <svg viewBox="0 0 24 24"><path d="M12 5.9c1.16 0 2.1.94 2.1 2.1s-.94 2.1-2.1 2.1S9.9 9.16 9.9 8s.94-2.1 2.1-2.1z"/></svg>
+        回访管理
+      </a>
+      <a href="inspection.html" class="nav-item">
+        <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5z"/></svg>
+        巡检管理
+      </a>
+      <a href="quality.html" class="nav-item">
+        <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+        质保金管理
+      </a>
+      <div class="nav-divider"></div>
+      <a href="admin.html" class="nav-item active">
+        <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4z"/></svg>
+        管理员后台
+      </a>
     </div>
   </div>
+  <div class="main">
+    <div class="page-header">
+      <div class="page-title">⚙️ 超级管理员后台</div>
+      <button class="btn btn-slate" onclick="openAddModal()">+ 新增管理员</button>
+    </div>
 
-  <div class="content">
-    <div class="page-title">⚙️ 管理员后台</div>
-    <div class="page-subtitle">管理系统账号、角色权限与操作日志（仅超级管理员可访问）</div>
-
+    <!-- Info Cards -->
     <div class="info-grid">
-      <div class="info-box"><div class="info-num" id="totalUsers">-</div><div class="info-label">账号总数</div></div>
-      <div class="info-box"><div class="info-num" id="totalLogs">-</div><div class="info-label">登录日志</div></div>
-      <div class="info-box"><div class="info-num" id="totalRecords">-</div><div class="info-label">业务记录</div></div>
-      <div class="info-box"><div class="info-num" id="loginSuccess">-</div><div class="info-label">成功登录</div></div>
+      <div class="info-card"><div class="info-label">管理员总数</div><div class="info-value" id="totalCount">0</div></div>
+      <div class="info-card"><div class="info-label">活跃状态</div><div class="info-value" id="activeCount" style="color:#16a34a">0</div></div>
+      <div class="info-card"><div class="info-label">登录日志总数</div><div class="info-value" id="logCount">0</div></div>
     </div>
 
-    <div class="admin-grid">
-      <div class="admin-card">
-        <div class="admin-card-title">
-          <span>👥 账号管理</span>
-          <button class="btn" onclick="openAddUser()">+ 新增账号</button>
-        </div>
-        <div id="userList"></div>
+    <!-- Admin table -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">管理员账号管理</div>
       </div>
+      <table>
+        <thead><tr><th>序号</th><th>用户名</th><th>角色</th><th>状态</th><th>创建时间</th><th>操作</th></tr></thead>
+        <tbody id="adminTable"></tbody>
+      </table>
+    </div>
 
-      <div class="admin-card">
-        <div class="admin-card-title">📋 登录日志（最近20条）</div>
-        <div class="warning-box"><strong>⚠️ 安全提示</strong>以下是系统登录记录，超级管理员可查看所有登录尝试。</div>
-        <div id="logList"></div>
+    <!-- Login logs -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">登录日志</div>
+        <button class="btn btn-outline" onclick="clearLogs()">清空日志</button>
+      </div>
+      <table>
+        <thead><tr><th>#</th><th>用户名</th><th>登录时间</th><th>登录状态</th><th>IP地址</th></tr></thead>
+        <tbody id="logTable"></tbody>
+      </table>
+    </div>
+
+    <!-- System info -->
+    <div class="card">
+      <div class="card-header"><div class="card-title">系统说明</div></div>
+      <div class="card-body">
+        <p>本系统采用 localStorage 进行数据存储，数据保存在用户浏览器本地。</p>
+        <p>默认管理员账号：<strong>admin</strong> / 密码：<strong>123456</strong></p>
+        <p>管理员账号用于登录系统，超级管理员可增删其他管理员账号。</p>
+        <p>所有业务数据（售后、回访、巡检、质保金）均存储在浏览器本地，切换浏览器或清除缓存后数据将丢失。</p>
+        <p>建议定期导出重要数据备份。</p>
       </div>
     </div>
   </div>
 </div>
 
-<div class="modal-overlay" id="userModal">
+<!-- Add/Edit Admin Modal -->
+<div class="modal-overlay" id="adminModal">
   <div class="modal">
-    <div class="modal-title" id="userModalTitle">新增账号</div>
-    <form id="userForm" onsubmit="saveUser(event)">
-      <input type="hidden" id="editUsername">
-      <div class="form-group"><label>用户名 *</label><input class="form-input" id="u_username" required placeholder="登录用户名（不可重复）" autocomplete="off"></div>
-      <div class="form-group"><label>昵称</label><input class="form-input" id="u_nickname" placeholder="显示昵称"></div>
-      <div class="form-group"><label>密码 *</label><input class="form-input" type="password" id="u_password" required placeholder="登录密码" autocomplete="new-password"></div>
-      <div class="form-group"><label>角色</label><select class="form-input" id="u_role"><option value="admin">管理员</option><option value="super">超级管理员</option></select></div>
-      <div class="modal-actions">
-        <button type="button" class="btn btn-outline" onclick="closeUserModal()">取消</button>
-        <button type="submit" class="btn">保存账号</button>
+    <div class="modal-header">
+      <div class="modal-title" id="adminModalTitle">新增管理员</div>
+      <button class="modal-close" onclick="closeAdminModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="editAdminId">
+      <div class="form-group">
+        <label class="form-label">用户名 *</label>
+        <input class="form-input" id="f_username" placeholder="输入用户名">
       </div>
-    </form>
+      <div class="form-group">
+        <label class="form-label" id="pwdLabel">密码 *</label>
+        <input class="form-input" type="password" id="f_password" placeholder="输入密码">
+      </div>
+      <div class="form-group">
+        <label class="form-label">角色</label>
+        <select class="form-select" id="f_role">
+          <option value="admin">管理员</option>
+          <option value="super">超级管理员</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">状态</label>
+        <select class="form-select" id="f_status">
+          <option value="active">正常</option>
+          <option value="inactive">停用</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeAdminModal()">取消</button>
+      <button class="btn btn-slate" onclick="saveAdmin()">保存</button>
+    </div>
   </div>
 </div>
-
-<div class="toast" id="toast"></div>
 
 <script>
-function checkAuth(){
-  var u=JSON.parse(localStorage.getItem('sys_current_user')||'null');
-  if(!u){location.href='index.html';return;}
-  if(u.role!=='super'){alert('仅超级管理员可访问此页面');location.href='dashboard.html';return;}
-  document.getElementById('userName').textContent=u.nickname||u.username;
-  document.getElementById('userRole').textContent='超级管理员';
-  document.getElementById('userAvatar').textContent=(u.nickname||u.username).charAt(0).toUpperCase();
+if(!sessionStorage.getItem('isLoggedIn'))window.location.href='index.html';
+document.getElementById('showUser').textContent=sessionStorage.getItem('username')||'admin';
+
+// Init default admin
+var admins=JSON.parse(localStorage.getItem('admins')||'null');
+if(!admins){
+  admins=[{id:'default',username:'admin',password:'123456',role:'super',status:'active',createdAt:'2026-01-01'}];
+  localStorage.setItem('admins',JSON.stringify(admins));
 }
-function logout(){localStorage.removeItem('sys_current_user');location.href='index.html';}
-function showToast(msg,type){
-  var t=document.getElementById('toast');
-  t.textContent=msg;t.className='toast '+(type==='success'?'success':'error')+' '+(type==='success'?'success':'error');
-  t.className='toast '+(type==='success'?'success':'error');
-  t.className='toast '+type;
-  setTimeout(function(){t.classList.add('show');},10);
-  setTimeout(function(){t.classList.remove('show');},2500);
-}
-function getUsers(){return JSON.parse(localStorage.getItem('sys_users')||'[]');}
-function saveUsers(arr){localStorage.setItem('sys_users',JSON.stringify(arr));}
-function getLogs(){return JSON.parse(localStorage.getItem('sys_login_log')||'[]');}
-function getTotalRecords(){
-  var keys=['quality','visit','service','inspection'];
-  return keys.reduce(function(a,k){return a+JSON.parse(localStorage.getItem('sys_'+k)||'[]').length;},0);
-}
-function buildInfo(){
-  var users=getUsers();var logs=getLogs();
-  document.getElementById('totalUsers').textContent=users.length;
-  document.getElementById('totalLogs').textContent=logs.length;
-  document.getElementById('totalRecords').textContent=getTotalRecords();
-  document.getElementById('loginSuccess').textContent=logs.filter(function(l){return l.success;}).length;
-}
-function buildUserList(){
-  var users=getUsers();
-  var current=JSON.parse(localStorage.getItem('sys_current_user')||'{}');
-  var html=users.map(function(u){
-    var isCurrent=u.username===current.username;
-    var actions=isCurrent?'<span style="font-size:11px;color:var(--muted);padding:5px 8px">当前</span>':
-      '<button class="action-btn" onclick="editUser(\''+u.username+'\')">编辑</button><button class="action-btn danger" onclick="delUser(\''+u.username+'\')">删除</button>';
-    return'<div class="user-list-item"><div class="u-avatar">'+(u.nickname||u.username).charAt(0).toUpperCase()+'</div><div class="u-info"><div class="u-name">'+(u.nickname||u.username)+' <span class="role-badge '+(u.role==='super'?'role-super':'role-admin')+'">'+(u.role==='super'?'超级管理员':'管理员')+'</span></div><div class="u-meta">@'+u.username+' · '+u.role+'</div></div><div class="u-actions">'+actions+'</div></div>';
+
+// Login logs
+var loginLogs=JSON.parse(localStorage.getItem('loginLogs')||'[]');
+var currentUser=sessionStorage.getItem('username')||'';
+loginLogs.unshift({username:currentUser,time:new Date().toLocaleString('zh-CN'),status:'登录成功',ip:'192.168.1.'+Math.floor(Math.random()*255)});
+localStorage.setItem('loginLogs',JSON.stringify(loginLogs.slice(0,100)));
+
+function renderAdmins(){
+  var total=admins.length;
+  var active=admins.filter(function(a){return a.status==='active';}).length;
+  document.getElementById('totalCount').textContent=total;
+  document.getElementById('activeCount').textContent=active;
+  document.getElementById('logCount').textContent=loginLogs.length;
+  document.getElementById('adminTable').innerHTML=admins.map(function(a,i){
+    var roleMap={super:'badge-slate',admin:'badge-slate'};
+    var roleName={super:'超级管理员',admin:'管理员'};
+    var statusMap={active:'badge-green',inactive:'badge-red'};
+    var statusName={active:'正常',inactive:'停用'};
+    var isDefault=a.id==='default';
+    return'<tr><td>'+(i+1)+'</td><td style="font-weight:600">'+esc(a.username)+'</td><td><span class="badge '+roleMap[a.role]+'">'+roleName[a.role]+'</span></td><td><span class="badge '+statusMap[a.status]+'">'+statusName[a.status]+'</span></td><td>'+esc(a.createdAt||'')+'</td><td>'+(isDefault?'<span style="color:#9ca3af;font-size:12px">默认账号</span>':'<button class="action-btn action-edit" onclick="editAdmin(\''+a.id+'\')">编辑</button><button class="action-btn action-del" onclick="delAdmin(\''+a.id+'\')">删除</button>')+'</td></tr>';
   }).join('');
-  document.getElementById('userList').innerHTML=html;
+  document.getElementById('logTable').innerHTML=loginLogs.length?loginLogs.map(function(l,i){return'<tr><td>'+(i+1)+'</td><td>'+esc(l.username)+'</td><td>'+esc(l.time)+'</td><td><span class="badge badge-green">'+esc(l.status)+'</span></td><td>'+esc(l.ip)+'</td></tr>';}).join(''):'<tr><td colspan="5" class="empty-state"><p>暂无登录日志</p></td></tr>';
 }
-function buildLogList(){
-  var logs=getLogs().slice(0,20);
-  if(!logs.length){document.getElementById('logList').innerHTML='<div style="text-align:center;padding:40px;color:var(--muted);font-size:13px">暂无登录记录</div>';return;}
-  var html=logs.map(function(l){
-    var cls=l.success?'log-success':'log-fail';
-    var txt=l.success?'成功':'失败';
-    var time=new Date(l.t).toLocaleString('zh-CN');
-    return'<div class="log-item"><div class="log-time">'+time+'</div><div class="log-text">用户 <strong style="color:var(--cyan)">'+l.user+'</strong> 登录 <span class="'+cls+'">'+txt+'</span></div></div>';
-  }).join('');
-  document.getElementById('logList').innerHTML=html;
+
+function openAddModal(){
+  editingAdminId=null;
+  document.getElementById('adminModalTitle').textContent='新增管理员';
+  document.getElementById('f_username').value='';
+  document.getElementById('f_password').value='';
+  document.getElementById('f_role').value='admin';
+  document.getElementById('f_status').value='active';
+  document.getElementById('adminModal').classList.add('active');
 }
-function openAddUser(){
-  document.getElementById('userModalTitle').textContent='新增账号';
-  document.getElementById('userForm').reset();
-  document.getElementById('editUsername').value='';
-  document.getElementById('u_username').disabled=false;
-  document.getElementById('userModal').classList.add('show');
+
+function editAdmin(id){
+  var a=admins.find(function(x){return x.id===id;});
+  if(!a)return;
+  editingAdminId=id;
+  document.getElementById('adminModalTitle').textContent='编辑管理员';
+  document.getElementById('f_username').value=a.username;
+  document.getElementById('f_password').value='';
+  document.getElementById('f_password').placeholder='留空则不修改密码';
+  document.getElementById('f_role').value=a.role;
+  document.getElementById('f_status').value=a.status;
+  document.getElementById('adminModal').classList.add('active');
 }
-function editUser(username){
-  var u=getUsers().find(function(x){return x.username===username;});
-  if(!u)return;
-  document.getElementById('userModalTitle').textContent='编辑账号';
-  document.getElementById('editUsername').value=username;
-  document.getElementById('u_username').value=u.username;
-  document.getElementById('u_username').disabled=true;
-  document.getElementById('u_nickname').value=u.nickname||'';
-  document.getElementById('u_password').value=u.password;
-  document.getElementById('u_role').value=u.role;
-  document.getElementById('userModal').classList.add('show');
+
+function closeAdminModal(){
+  document.getElementById('adminModal').classList.remove('active');
+  editingAdminId=null;
 }
-function closeUserModal(){document.getElementById('userModal').classList.remove('show');}
-function saveUser(e){
-  e.preventDefault();
-  var editUsername=document.getElementById('editUsername').value;
-  var username=document.getElementById('u_username').value.trim();
-  var nickname=document.getElementById('u_nickname').value.trim();
-  var password=document.getElementById('u_password').value;
-  var role=document.getElementById('u_role').value;
-  if(!username||!password){showToast('用户名和密码不能为空','error');return;}
-  var users=getUsers();
-  if(editUsername){
-    var idx=users.findIndex(function(x){return x.username===editUsername;});
-    if(idx>-1){users[idx].nickname=nickname;users[idx].password=password;users[idx].role=role;showToast('账号已更新');}
-  }else{
-    if(users.find(function(x){return x.username===username;})){showToast('用户名已存在','error');return;}
-    users.push({username:username,password:password,nickname:nickname||username,role:role});
-    showToast('账号创建成功');
+
+function saveAdmin(){
+  var username=document.getElementById('f_username').value.trim();
+  var password=document.getElementById('f_password').value;
+  var role=document.getElementById('f_role').value;
+  var status=document.getElementById('f_status').value;
+  if(!username){alert('用户名不能为空');return;}
+  if(!editingAdminId&&!password){alert('密码不能为空');return;}
+  if(admins.some(function(a){return a.username===username&&a.id!==editingAdminId;})){
+    alert('用户名已存在');return;
   }
-  saveUsers(users);
-  closeUserModal();
-  buildUserList();
-  buildInfo();
-}
-function delUser(username){
-  var current=JSON.parse(localStorage.getItem('sys_current_user')||'{}');
-  if(username===current.username){showToast('不能删除当前登录账号','error');return;}
-  if(!confirm('确认删除账号 '+username+'？'))return;
-  saveUsers(getUsers().filter(function(x){return x.username!==username;}));
-  showToast('账号已删除','error');
-  buildUserList();
-  buildInfo();
-}
-function updateTime(){
-  var now=new Date();
-  var s=now.getFullYear()+'/'+(now.getMonth()+1).toString().padStart(2,'0')+'/'+now.getDate().toString().padStart(2,'0')+'  '+now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0');
-  document.getElementById('topbarTime').textContent=s;
-}
-function makeStars(){
-  var el=document.getElementById('stars');
-  for(var i=0;i<60;i++){
-    var s=document.createElement('div');s.className='star';
-    s.style.cssText='left:'+Math.random()*100+'%;top:'+Math.random()*100+'%;--d:'+(2+Math.random()*4)+'s;animation-delay:'+Math.random()*4+'s';
-    el.appendChild(s);
+  if(editingAdminId){
+    for(var i=0;i<admins.length;i++){
+      if(admins[i].id===editingAdminId){
+        admins[i].username=username;
+        if(password)admins[i].password=password;
+        admins[i].role=role;
+        admins[i].status=status;
+        break;
+      }
+    }
+  } else {
+    admins.push({id:Date.now().toString(),username:username,password:password,role:role,status:status,createdAt:new Date().toISOString().slice(0,10)});
   }
+  localStorage.setItem('admins',JSON.stringify(admins));
+  renderAdmins();closeAdminModal();
 }
-window.addEventListener('DOMContentLoaded',function(){
-  checkAuth();
-  makeStars();
-  buildInfo();
-  buildUserList();
-  buildLogList();
-  updateTime();
-  setInterval(updateTime,30000);
-});
+
+function delAdmin(id){
+  if(id==='default'){alert('默认管理员账号不能删除');return;}
+  if(!confirm('确定删除该管理员？'))return;
+  admins=admins.filter(function(a){return a.id!==id;});
+  localStorage.setItem('admins',JSON.stringify(admins));
+  renderAdmins();
+}
+
+function clearLogs(){
+  if(!confirm('确定清空所有登录日志？'))return;
+  loginLogs=[];
+  localStorage.setItem('loginLogs',JSON.stringify(loginLogs));
+  renderAdmins();
+}
+
+function logout(){sessionStorage.removeItem('isLoggedIn');window.location.href='index.html';}
+function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+renderAdmins();
 </script>
 </body>
 </html>

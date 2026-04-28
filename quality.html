@@ -4,361 +4,363 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>质保金管理</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Noto+Sans+SC:wght@300;400;700&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--bg:#020617;--surface:rgba(10,20,50,0.85);--border:rgba(0,150,255,0.15);--primary:#0088ff;--primary2:#00ccff;--accent:#0055ff;--text:#e0f4ff;--muted:rgba(255,255,255,0.4);--cyan:rgba(0,200,255,0.8);--danger:#ff4466;--success:#00cc66}
-body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
-body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 0%,rgba(0,100,255,0.12) 0%,transparent 50%),radial-gradient(ellipse at 80% 100%,rgba(80,0,200,0.1) 0%,transparent 50%);pointer-events:none;z-index:0}
-.grid-bg{position:fixed;inset:0;pointer-events:none;background-image:linear-gradient(rgba(0,100,255,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(0,100,255,0.02) 1px,transparent 1px);background-size:50px 50px;z-index:0}
-.stars{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
-.star{position:absolute;width:2px;height:2px;background:#fff;border-radius:50%;animation:twinkle var(--d,3s) infinite ease-in-out}
-@keyframes twinkle{0%,100%{opacity:.1}50%{opacity:.8}}
-.sidebar{position:fixed;left:0;top:0;bottom:0;width:240px;background:var(--surface);border-right:1px solid var(--border);z-index:100;display:flex;flex-direction:column;backdrop-filter:blur(20px)}
-.sidebar-logo{padding:24px 20px;border-bottom:1px solid var(--border);text-align:center}
-.logo-icon{width:44px;height:44px;margin:0 auto 10px;border-radius:12px;background:linear-gradient(135deg,var(--primary),var(--primary2));display:flex;align-items:center;justify-content:center;box-shadow:0 0 20px rgba(0,150,255,0.3)}
-.logo-icon svg{width:24px;height:24px;fill:#fff}
-.logo-title{font-family:'Orbitron',sans-serif;font-size:13px;color:#fff;letter-spacing:2px;font-weight:700}
-.logo-sub{font-size:11px;color:var(--muted);margin-top:4px}
-.nav{flex:1;padding:16px 12px;overflow-y:auto}
-.nav-item{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:10px;cursor:pointer;transition:all 0.3s;font-size:14px;color:var(--muted);text-decoration:none;margin-bottom:4px;position:relative}
-.nav-item::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--primary2);opacity:0}
-.nav-item:hover{background:rgba(0,130,255,0.1);color:var(--cyan)}
-.nav-item.active{background:rgba(0,130,255,0.15);color:var(--cyan)}
-.nav-item.active::before{opacity:1}
-.nav-item svg{width:18px;height:18px;fill:currentColor;flex-shrink:0}
-.nav-badge{background:var(--primary);color:#fff;font-size:10px;border-radius:10px;padding:2px 6px;margin-left:auto;font-weight:700}
-.nav-section{margin-top:20px}
-.nav-section-title{font-size:10px;color:rgba(0,150,255,0.4);letter-spacing:2px;text-transform:uppercase;padding:4px 14px;margin-bottom:4px}
-.sidebar-footer{padding:16px 12px;border-top:1px solid var(--border)}
-.user-info{display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(0,80,150,0.2);border-radius:10px;cursor:pointer}
-.user-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--primary2));display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;font-family:'Orbitron',sans-serif;flex-shrink:0}
-.user-details{overflow:hidden}
-.user-name{font-size:13px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.user-role{font-size:10px;color:var(--muted)}
-.main{margin-left:240px;min-height:100vh;position:relative;z-index:1}
-.topbar{position:sticky;top:0;z-index:50;background:rgba(2,6,23,0.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 32px;display:flex;align-items:center;justify-content:space-between;height:64px}
-.topbar-title{font-family:'Orbitron',sans-serif;font-size:16px;color:#fff;letter-spacing:2px}
-.topbar-right{display:flex;align-items:center;gap:20px}
-.topbar-time{font-size:12px;color:var(--muted);font-family:'Orbitron',sans-serif}
-.topbar-btn{background:rgba(0,100,255,0.15);border:1px solid rgba(0,150,255,0.2);border-radius:8px;padding:8px 16px;cursor:pointer;color:var(--cyan);font-size:12px;transition:all 0.3s;font-family:'Noto Sans SC',sans-serif}
-.topbar-btn:hover{background:rgba(0,130,255,0.3)}
-.content{padding:32px}
-.page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
-.page-title{font-family:'Orbitron',sans-serif;font-size:20px;font-weight:700;color:#fff;letter-spacing:2px}
-.page-subtitle{font-size:13px;color:var(--muted);margin-top:4px}
-.action-row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
-.btn{background:linear-gradient(135deg,var(--accent),var(--primary));border:none;border-radius:10px;padding:10px 20px;color:#fff;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.3s;font-family:'Noto Sans SC',sans-serif;display:inline-flex;align-items:center;gap:6px;text-decoration:none}
-.btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,100,255,0.4)}
-.btn-outline{background:rgba(0,150,255,0.1);border:1px solid rgba(0,150,255,0.3);color:var(--cyan)}
-.btn-outline:hover{background:rgba(0,150,255,0.2)}
-.btn-danger{background:linear-gradient(135deg,#cc0033,#ff2244)}
-.stats-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
-.stat-mini{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 20px;backdrop-filter:blur(10px)}
-.stat-mini-label{font-size:11px;color:var(--muted);margin-bottom:4px}
-.stat-mini-val{font-family:'Orbitron',sans-serif;font-size:22px;font-weight:700;color:#fff}
-.chart-row{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px}
-.chart-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;backdrop-filter:blur(10px)}
-.chart-title{font-size:14px;font-weight:700;color:#fff;margin-bottom:16px;display:flex;align-items:center;gap:8px}
-.chart-title::before{content:'';width:3px;height:14px;background:linear-gradient(to bottom,var(--primary),var(--primary2));border-radius:2px}
-.filter-bar{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin-bottom:20px;backdrop-filter:blur(10px);display:flex;gap:12px;flex-wrap:wrap;align-items:center}
-.filter-input{background:rgba(0,50,100,0.3);border:1px solid rgba(0,150,255,0.2);border-radius:8px;padding:8px 14px;color:var(--text);font-size:13px;outline:none;transition:all 0.3s;font-family:'Noto Sans SC',sans-serif;flex:1;min-width:160px}
-.filter-input:focus{border-color:var(--primary2)}
-.filter-input::placeholder{color:rgba(255,255,255,0.2)}
-select.filter-input{cursor:pointer}
-.table-wrap{background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden;backdrop-filter:blur(10px)}
+body{font-family:'Inter','PingFang SC','Microsoft YaHei',sans-serif;background:#f0f2f5;color:#1a1a2e;min-height:100vh}
+.topbar{background:#fff;padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #e5e7eb;position:sticky;top:0;z-index:100}
+.topbar-logo{display:flex;align-items:center;gap:10px}
+.topbar-logo-icon{width:34px;height:34px;background:#9333ea;border-radius:8px;display:flex;align-items:center;justify-content:center}
+.topbar-logo-icon svg{width:18px;height:18px;fill:#fff}
+.topbar-logo h1{font-size:15px;font-weight:700}
+.topbar-right{display:flex;align-items:center;gap:16px}
+.topbar-user{display:flex;align-items:center;gap:8px;font-size:13px;color:#6b7280;font-weight:500}
+.topbar-user span{width:32px;height:32px;background:#f3e8ff;color:#9333ea;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:600}
+.logout-btn{padding:7px 14px;background:#f3f4f6;color:#374151;border:1px solid #e5e7eb;border-radius:6px;font-size:13px;cursor:pointer;font-weight:500;transition:background .2s}
+.logout-btn:hover{background:#e5e7eb}
+.layout{display:flex;min-height:calc(100vh - 60px)}
+.sidebar{width:200px;background:#fff;border-right:1px solid #e5e7eb;padding:20px 0;flex-shrink:0}
+.nav-section{margin-bottom:4px}
+.nav-label{font-size:10px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:.8px;padding:8px 16px 4px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 16px;font-size:14px;color:#374151;font-weight:500;cursor:pointer;text-decoration:none;transition:background .15s,color .15s;border-radius:6px;margin:1px 8px}
+.nav-item:hover{background:#f3f4f6;color:#1a1a2e}
+.nav-item.active{background:#f3e8ff;color:#9333ea;font-weight:600}
+.nav-item svg{width:16px;height:16px;fill:currentColor;flex-shrink:0}
+.nav-divider{height:1px;background:#e5e7eb;margin:12px 16px}
+.main{flex:1;padding:24px;overflow-x:auto}
+.page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+.page-title{font-size:20px;font-weight:700;color:#1a1a2e}
+.page-actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn{padding:8px 16px;border-radius:7px;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:background .2s,transform .1s}
+.btn:active{transform:scale(.98)}
+.btn-primary{background:#2563eb;color:#fff}
+.btn-primary:hover{background:#1d4ed8}
+.btn-purple{background:#9333ea;color:#fff}
+.btn-purple:hover{background:#7e22ce}
+.btn-outline{background:#fff;color:#374151;border:1px solid #e5e7eb}
+.btn-outline:hover{background:#f3f4f6}
+.btn-danger{background:#dc2626;color:#fff}
+.btn-danger:hover{background:#b91c1c}
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:20px}
+.stat-card{background:#fff;border-radius:12px;padding:18px 20px;border:1px solid #e5e7eb}
+.stat-label{font-size:11px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.stat-value{font-size:26px;font-weight:700;color:#1a1a2e}
+.stat-sub{font-size:12px;color:#6b7280;margin-top:4px}
+.card{background:#fff;border-radius:12px;border:1px solid #e5e7eb;margin-bottom:16px}
+.card-header{padding:16px 20px;border-bottom:1px solid #f3f4f6;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.card-title{font-size:14px;font-weight:700;color:#1a1a2e}
+.filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.filter-select{padding:6px 10px;border:1px solid #e5e7eb;border-radius:6px;font-size:13px;color:#374151;background:#fafafa;cursor:pointer;outline:none}
+.filter-select:focus{border-color:#2563eb}
+.search-input{padding:6px 10px;border:1px solid #e5e7eb;border-radius:6px;font-size:13px;color:#374151;background:#fafafa;outline:none;width:180px}
+.search-input:focus{border-color:#2563eb;background:#fff}
+.card-body{padding:0}
 table{width:100%;border-collapse:collapse}
-thead th{background:rgba(0,80,150,0.2);padding:14px 16px;text-align:left;font-size:12px;font-weight:700;color:var(--cyan);letter-spacing:1px;border-bottom:1px solid var(--border);white-space:nowrap}
-tbody tr{transition:background 0.2s;border-bottom:1px solid rgba(0,150,255,0.06)}
-tbody tr:hover{background:rgba(0,80,150,0.15)}
-tbody td{padding:12px 16px;font-size:13px;color:var(--text);vertical-align:middle}
-tbody td:first-child{color:var(--muted);font-size:12px}
-.status-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600}
-.status-active{background:rgba(0,204,100,0.15);color:#00cc66;border:1px solid rgba(0,204,100,0.3)}
-.status-pending{background:rgba(255,180,0,0.15);color:#ffaa00;border:1px solid rgba(255,180,0,0.3)}
-.status-done{background:rgba(0,150,255,0.15);color:var(--cyan);border:1px solid rgba(0,150,255,0.3)}
-.action-btns{display:flex;gap:6px}
-.action-btn{background:rgba(0,100,255,0.15);border:1px solid rgba(0,100,255,0.25);border-radius:6px;padding:5px 10px;color:var(--cyan);font-size:11px;cursor:pointer;transition:all 0.2s;font-family:'Noto Sans SC',sans-serif}
-.action-btn:hover{background:rgba(0,100,255,0.3)}
-.action-btn.danger{background:rgba(255,60,80,0.15);border-color:rgba(255,60,80,0.3);color:#ff4466}
-.action-btn.danger:hover{background:rgba(255,60,80,0.3)}
-.empty-row td{text-align:center;padding:60px 20px;color:var(--muted);font-size:13px}
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:1000;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
-.modal-overlay.show{display:flex}
-.modal{background:rgba(10,20,50,0.98);border:1px solid rgba(0,150,255,0.2);border-radius:20px;padding:32px;width:90%;max-width:700px;max-height:90vh;overflow-y:auto;box-shadow:0 0 60px rgba(0,100,255,0.2)}
-.modal-title{font-family:'Orbitron',sans-serif;font-size:16px;color:#fff;margin-bottom:24px;letter-spacing:2px;padding-bottom:16px;border-bottom:1px solid var(--border)}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.form-group{margin-bottom:16px}
+th{font-size:11px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:.5px;padding:10px 14px;text-align:left;background:#fafafa;border-bottom:1px solid #e5e7eb;white-space:nowrap}
+td{padding:11px 14px;font-size:13px;color:#374151;border-bottom:1px solid #f3f4f6;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#fafafa}
+.badge{display:inline-block;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:600}
+.badge-green{background:#f0fdf4;color:#16a34a}
+.badge-yellow{background:#fefce8;color:#ca8a04}
+.badge-red{background:#fef2f2;color:#dc2626}
+.badge-blue{background:#eff6ff;color:#2563eb}
+.badge-purple{background:#f3e8ff;color:#9333ea}
+.badge-gray{background:#f9fafb;color:#6b7280;border:1px solid #e5e7eb}
+.action-btn{padding:4px 10px;border-radius:5px;font-size:12px;font-weight:600;cursor:pointer;border:none;transition:background .2s}
+.action-edit{background:#eff6ff;color:#2563eb}
+.action-edit:hover{background:#dbeafe}
+.action-del{background:#fef2f2;color:#dc2626;margin-left:4px}
+.action-del:hover{background:#fee2e2}
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+@media(max-width:900px){.chart-grid{grid-template-columns:1fr}}
+.chart-box{background:#fff;border-radius:12px;border:1px solid #e5e7eb;padding:16px 20px}
+.chart-title{font-size:13px;font-weight:700;color:#1a1a2e;margin-bottom:12px}
+.chart-container{position:relative;height:200px}
+.pagination{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-top:1px solid #f3f4f6;flex-wrap:wrap;gap:8px}
+.pagination-info{font-size:12px;color:#9ca3af}
+.pagination-btn{padding:6px 12px;border:1px solid #e5e7eb;border-radius:6px;background:#fff;color:#374151;font-size:12px;font-weight:600;cursor:pointer;transition:background .2s}
+.pagination-btn:hover{background:#f3f4f6}
+.pagination-btn.active{background:#2563eb;color:#fff;border-color:#2563eb}
+.pagination-btn:disabled{opacity:.4;cursor:not-allowed}
+/* Modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);display:none;align-items:center;justify-content:center;z-index:1000;padding:20px}
+.modal-overlay.active{display:flex}
+.modal{background:#fff;border-radius:14px;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.15)}
+.modal-header{padding:18px 24px;border-bottom:1px solid #f3f4f6;display:flex;align-items:center;justify-content:space-between}
+.modal-title{font-size:16px;font-weight:700;color:#1a1a2e}
+.modal-close{width:28px;height:28px;border-radius:6px;border:none;background:#f3f4f6;color:#6b7280;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center}
+.modal-close:hover{background:#e5e7eb}
+.modal-body{padding:20px 24px}
+.modal-footer{padding:16px 24px;border-top:1px solid #f3f4f6;display:flex;justify-content:flex-end;gap:8px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-group{margin-bottom:14px}
 .form-group.full{grid-column:1/-1}
-.form-group label{display:block;font-size:12px;color:var(--cyan);margin-bottom:8px;letter-spacing:1px}
-.form-input{width:100%;padding:12px 14px;background:rgba(0,50,100,0.3);border:1px solid rgba(0,150,255,0.2);border-radius:10px;color:var(--text);font-size:13px;outline:none;transition:all 0.3s;font-family:'Noto Sans SC',sans-serif}
-.form-input:focus{border-color:var(--primary2);box-shadow:0 0 10px rgba(0,150,255,0.15)}
-.form-input::placeholder{color:rgba(255,255,255,0.2)}
-textarea.form-input{resize:vertical;min-height:80px}
-.modal-actions{display:flex;justify-content:flex-end;gap:12px;margin-top:24px;padding-top:20px;border-top:1px solid var(--border)}
-.toast{position:fixed;top:30px;left:50%;transform:translateX(-50%) translateY(-100px);padding:12px 24px;background:rgba(10,20,50,0.95);border:1px solid;border-radius:12px;z-index:9999;font-size:13px;letter-spacing:1px;transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1);backdrop-filter:blur(10px);min-width:240px;text-align:center}
-.toast.show{transform:translateX(-50%) translateY(0)}
-.toast.success{border-color:rgba(0,255,150,0.5);color:#00ffaa}
-.toast.error{border-color:rgba(255,60,80,0.5);color:#ff4466}
-.pagination{display:flex;align-items:center;justify-content:center;gap:8px;padding:20px}
-.page-btn{background:rgba(0,100,255,0.15);border:1px solid rgba(0,150,255,0.2);border-radius:8px;padding:8px 14px;color:var(--cyan);font-size:12px;cursor:pointer;transition:all 0.2s;font-family:'Noto Sans SC',sans-serif}
-.page-btn:hover,.page-btn.active{background:rgba(0,100,255,0.3)}
-.page-btn.active{background:var(--primary);border-color:var(--primary);color:#fff}
-@media(max-width:1100px){.sidebar{width:64px}.sidebar-logo .logo-title,.sidebar-logo .logo-sub,.nav-section-title,.nav-item span,.user-details,.nav-badge{display:none}.main{margin-left:64px}.form-grid{grid-template-columns:1fr}.chart-row{grid-template-columns:1fr}}
-@media(max-width:768px){.sidebar{display:none}.main{margin-left:0}.content{padding:16px}.stats-bar{grid-template-columns:1fr 1fr}}
+.form-label{font-size:12px;font-weight:600;color:#374151;margin-bottom:5px;display:block}
+.form-input,.form-select{width:100%;padding:9px 12px;border:1.5px solid #e5e7eb;border-radius:7px;font-size:13px;color:#1a1a2e;background:#fafafa;outline:none;transition:border-color .2s,background .2s}
+.form-input:focus,.form-select:focus{border-color:#2563eb;background:#fff;box-shadow:0 0 0 3px rgba(37,99,235,.08)}
+.form-input::placeholder{color:#9ca3af}
+.form-textarea{width:100%;padding:9px 12px;border:1.5px solid #e5e7eb;border-radius:7px;font-size:13px;color:#1a1a2e;background:#fafafa;outline:none;resize:vertical;min-height:80px;font-family:inherit;transition:border-color .2s,background .2s}
+.form-textarea:focus{border-color:#2563eb;background:#fff;box-shadow:0 0 0 3px rgba(37,99,235,.08)}
+.empty-state{text-align:center;padding:48px 20px;color:#9ca3af}
+.empty-state svg{width:40px;height:40px;fill:#e5e7eb;margin-bottom:12px}
+.empty-state p{font-size:13px}
 </style>
 </head>
 <body>
-<div class="stars" id="stars"></div>
-<div class="grid-bg"></div>
-
-<div class="sidebar">
-  <div class="sidebar-logo">
-    <div class="logo-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
-    <div class="logo-title">PRO-MANAGE</div>
-    <div class="logo-sub">智能管理平台</div>
+<div class="topbar">
+  <div class="topbar-logo">
+    <div class="topbar-logo-icon">
+      <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+    </div>
+    <h1>质保金管理</h1>
   </div>
-  <nav class="nav">
-    <div class="nav-section">
-      <div class="nav-section-title">主导航</div>
-      <a href="dashboard.html" class="nav-item"><svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg><span>控制台</span></a>
-      <a href="quality.html" class="nav-item active"><svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg><span>质保金管理</span></a>
-      <a href="visit.html" class="nav-item"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg><span>项目回访</span></a>
-      <a href="service.html" class="nav-item"><svg viewBox="0 0 24 24"><path d="M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.7C.4 7.1.9 10.1 2.9 12.1c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.3-2.3c.5-.4.5-1.1.1-1.4z"/></svg><span>项目售后</span></a>
-      <a href="inspection.html" class="nav-item"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14l-5-5 1.41-1.41L12 14.17l4.59-4.58L18 11l-6 6z"/></svg><span>项目巡检</span></a>
-    </div>
-    <div class="nav-section">
-      <div class="nav-section-title">系统</div>
-      <a href="admin.html" class="nav-item" id="navAdmin"><svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg><span>管理员</span><span class="nav-badge">ADMIN</span></a>
-    </div>
-  </nav>
-  <div class="sidebar-footer">
-    <div class="user-info" onclick="logout()">
-      <div class="user-avatar" id="userAvatar">A</div>
-      <div class="user-details">
-        <div class="user-name" id="userName">admin</div>
-        <div class="user-role" id="userRole">超级管理员</div>
-      </div>
-    </div>
+  <div class="topbar-right">
+    <div class="topbar-user"><span>Q</span><span id="showUser">admin</span></div>
+    <button class="logout-btn" onclick="logout()">退出登录</button>
   </div>
 </div>
-
-<div class="main">
-  <div class="topbar">
-    <div class="topbar-title">质保金管理</div>
-    <div class="topbar-right">
-      <div class="topbar-time" id="topbarTime"></div>
-      <button class="topbar-btn" onclick="location.href='dashboard.html'">← 控制台</button>
-      <button class="topbar-btn" onclick="logout()">退出登录</button>
+<div class="layout">
+  <div class="sidebar">
+    <div class="nav-section">
+      <div class="nav-label">主导航</div>
+      <a href="dashboard.html" class="nav-item">
+        <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+        仪表盘
+      </a>
+      <div class="nav-label">业务模块</div>
+      <a href="service.html" class="nav-item">
+        <svg viewBox="0 0 24 24"><path d="M21.41 11.58l-9-9C12.05 2.22 11.55 2 11 2H4c-1.1 0-2 .9-2 2v7c0 .55.22 1.05.59 1.42l9 9c.36.36.86.58 1.41.58.55 0 1.05-.22 1.41-.59l7-7c.37-.36.59-.86.59-1.41 0-.55-.23-1.06-.59-1.42zM5.5 7C4.67 7 4 6.33 4 5.5S4.67 4 5.5 4 7 4.67 7 5.5 6.33 7 5.5 7z"/></svg>
+        售后管理
+      </a>
+      <a href="visit.html" class="nav-item">
+        <svg viewBox="0 0 24 24"><path d="M12 5.9c1.16 0 2.1.94 2.1 2.1s-.94 2.1-2.1 2.1S9.9 9.16 9.9 8s.94-2.1 2.1-2.1m0 9c2.97 0 6.1 1.46 6.1 2.1v1.1H5.9V17c0-.64 3.13-2.1 6.1-2.1M12 4C9.79 4 8 5.79 8 8s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 9c-2.67 0-8 1.34-8 4v3h16v-3c0-2.66-5.33-4-8-4z"/></svg>
+        回访管理
+      </a>
+      <a href="inspection.html" class="nav-item">
+        <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+        巡检管理
+      </a>
+      <a href="quality.html" class="nav-item active">
+        <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+        质保金管理
+      </a>
+      <div class="nav-divider"></div>
+      <a href="admin.html" class="nav-item">
+        <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+        管理员后台
+      </a>
     </div>
   </div>
-
-  <div class="content">
+  <div class="main">
     <div class="page-header">
-      <div><div class="page-title">🛡️ 质保金管理</div><div class="page-subtitle">管理项目合同质保金信息，支持新增、编辑、删除操作</div></div>
-      <div class="action-row">
-        <button class="btn" onclick="exportData()">📥 导出</button>
-        <button class="btn" onclick="openAddModal()">+ 新增记录</button>
+      <div class="page-title">🛡️ 质保金管理系统</div>
+      <div class="page-actions">
+        <button class="btn btn-outline" onclick="exportCSV()">导出CSV</button>
+        <button class="btn btn-purple" onclick="openModal()">+ 新增记录</button>
       </div>
     </div>
-
-    <div class="chart-row">
-      <div class="chart-card"><div class="chart-title">合同金额 TOP6</div><canvas id="barChart" style="max-height:220px"></canvas></div>
-      <div class="chart-card"><div class="chart-title">质保状态分布</div><canvas id="donutChart" style="max-height:220px"></canvas></div>
+    <div class="stats-row" id="statsRow"></div>
+    <div class="chart-grid">
+      <div class="chart-box">
+        <div class="chart-title">质保金金额统计（万元）</div>
+        <div class="chart-container"><canvas id="barChart"></canvas></div>
+      </div>
+      <div class="chart-box">
+        <div class="chart-title">质保金到期状态分布</div>
+        <div class="chart-container"><canvas id="pieChart"></canvas></div>
+      </div>
     </div>
-
-    <div class="stats-bar" id="statsBar"></div>
-
-    <div class="filter-bar">
-      <input class="filter-input" placeholder="搜索项目名称..." id="searchInput" oninput="renderTable()">
-      <select class="filter-input" style="max-width:160px" id="statusFilter" onchange="renderTable()">
-        <option value="">全部状态</option><option value="active">进行中</option><option value="done">已退还</option>
-      </select>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">质保金记录列表</div>
+        <div class="filters">
+          <select class="filter-select" id="filterStatus" onchange="render()">
+            <option value="">全部状态</option><option value="未到期">未到期</option><option value="即将到期">即将到期</option><option value="已到期">已到期</option><option value="已退还">已退还</option>
+          </select>
+          <select class="filter-select" id="filterType" onchange="render()">
+            <option value="">全部类型</option><option value="系统集成">系统集成</option><option value="软件">软件</option><option value="硬件">硬件</option><option value="服务">服务</option>
+          </select>
+          <input type="text" class="search-input" id="searchInput" placeholder="搜索项目名称..." oninput="render()">
+        </div>
+      </div>
+      <div class="card-body">
+        <table>
+          <thead><tr><th>#</th><th>项目名称</th><th>客户单位</th><th>签订日期</th><th>质保到期日</th><th>质保金额(万)</th><th>类型</th><th>状态</th><th>操作</th></tr></thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+      <div class="pagination">
+        <div class="pagination-info" id="pageInfo"></div>
+        <div id="pageBtns"></div>
+      </div>
     </div>
-
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>序号</th><th>项目名称</th><th>用户名称</th><th>质保期</th><th>质保结束</th><th>合同金额</th><th>质保金</th><th>退还日期</th><th>状态</th><th>操作</th></tr></thead>
-        <tbody id="tableBody"></tbody>
-      </table>
-    </div>
-    <div class="pagination" id="pagination"></div>
   </div>
 </div>
 
+<!-- Modal -->
 <div class="modal-overlay" id="modal">
   <div class="modal">
-    <div class="modal-title" id="modalTitle">新增记录</div>
-    <form id="recordForm" onsubmit="saveRecord(event)">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle">新增质保金记录</div>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+    <div class="modal-body">
       <input type="hidden" id="editId">
-      <div class="form-grid">
-        <div class="form-group full"><label>项目名称 *</label><input class="form-input" id="f_projectName" required placeholder="请输入项目名称"></div>
-        <div class="form-group"><label>用户名称</label><input class="form-input" id="f_userName" placeholder="用户名称"></div>
-        <div class="form-group"><label>联系人</label><input class="form-input" id="f_contact" placeholder="联系人"></div>
-        <div class="form-group"><label>联系电话</label><input class="form-input" id="f_phone" placeholder="联系电话"></div>
-        <div class="form-group"><label>合同签订时间</label><input class="form-input" type="date" id="f_signDate"></div>
-        <div class="form-group"><label>质保开始时间</label><input class="form-input" type="date" id="f_warrantyStart"></div>
-        <div class="form-group"><label>质保期（年）</label><input class="form-input" type="number" id="f_warrantyYears" placeholder="1" min="1"></div>
-        <div class="form-group"><label>质保结束时间</label><input class="form-input" type="date" id="f_warrantyEnd"></div>
-        <div class="form-group"><label>合同金额（元）</label><input class="form-input" id="f_contractAmount" placeholder="合同金额"></div>
-        <div class="form-group"><label>质保金</label><input class="form-input" id="f_warrantyAmount" placeholder="质保金金额"></div>
-        <div class="form-group full"><label>退还日期</label><input class="form-input" id="f_returnDate" placeholder="退还日期/预计退还日期"></div>
-        <div class="form-group full"><label>备注</label><textarea class="form-input" id="f_remark" placeholder="备注信息"></textarea></div>
+      <div class="form-row">
+        <div class="form-group full"><label class="form-label">项目名称 *</label><input class="form-input" id="f_project" placeholder="例：智慧城市一期"></div>
+        <div class="form-group full"><label class="form-label">客户单位 *</label><input class="form-input" id="f_customer" placeholder="例：某县公安局"></div>
+        <div class="form-group"><label class="form-label">签订日期 *</label><input class="form-input" type="date" id="f_signDate"></div>
+        <div class="form-group"><label class="form-label">质保到期日 *</label><input class="form-input" type="date" id="f_expireDate"></div>
+        <div class="form-group"><label class="form-label">质保金额(万元) *</label><input class="form-input" type="number" id="f_amount" placeholder="5.0" step="0.01"></div>
+        <div class="form-group">
+          <label class="form-label">项目类型 *</label>
+          <select class="form-select" id="f_type">
+            <option value="系统集成">系统集成</option><option value="软件">软件</option><option value="硬件">硬件</option><option value="服务">服务</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">状态</label>
+          <select class="form-select" id="f_status">
+            <option value="未到期">未到期</option><option value="即将到期">即将到期</option><option value="已到期">已到期</option><option value="已退还">已退还</option>
+          </select>
+        </div>
+        <div class="form-group full"><label class="form-label">备注</label><textarea class="form-textarea" id="f_remark" placeholder="备注信息..."></textarea></div>
       </div>
-      <div class="modal-actions">
-        <button type="button" class="btn btn-outline" onclick="closeModal()">取消</button>
-        <button type="submit" class="btn">保存记录</button>
-      </div>
-    </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal()">取消</button>
+      <button class="btn btn-purple" onclick="saveRecord()">保存记录</button>
+    </div>
   </div>
 </div>
 
-<div class="toast" id="toast"></div>
-
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script>
-const FIELDS=['projectName','userName','signDate','warrantyStart','warrantyYears','warrantyEnd','contractAmount','warrantyAmount','returnDate','contact','phone','remark'];
-const PAGE_SIZE=10;
-let currentPage=1;
-let allData=[];
+if(!sessionStorage.getItem('isLoggedIn'))window.location.href='index.html';
+document.getElementById('showUser').textContent=sessionStorage.getItem('username')||'admin';
+function logout(){sessionStorage.removeItem('isLoggedIn');window.location.href='index.html';}
 
-function checkAuth(){
-  const u=JSON.parse(localStorage.getItem('sys_current_user')||'null');
-  if(!u){location.href='index.html';return;}
-  document.getElementById('userName').textContent=u.nickname||u.username;
-  document.getElementById('userRole').textContent=u.role==='super'?'超级管理员':'管理员';
-  document.getElementById('userAvatar').textContent=(u.nickname||u.username).charAt(0).toUpperCase();
-  if(u.role!=='super')document.getElementById('navAdmin').style.display='none';
-}
-function logout(){localStorage.removeItem('sys_current_user');location.href='index.html';}
+var data=JSON.parse(localStorage.getItem('qualityData')||'[]');
+var barChart,pieChart;
+var currentPage=1;
+var pageSize=10;
+var editingId=null;
 
-function showToast(msg,type='success'){
-  const t=document.getElementById('toast');
-  t.textContent=msg;t.className='toast '+type+(type==='success'?' success':' error');
-  setTimeout(()=>t.classList.add('show'),10);
-  setTimeout(()=>t.classList.remove('show'),2500);
+function initCharts(){
+  var ctx1=document.getElementById('barChart').getContext('2d');
+  var ctx2=document.getElementById('pieChart').getContext('2d');
+  barChart=new Chart(ctx1,{type:'bar',options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,grid:{color:'#f3f4f6'},ticks:{color:'#9ca3af'}},x:{grid:{display:false},ticks:{color:'#6b7280'}}}}});
+  pieChart=new Chart(ctx2,{type:'doughnut',options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{color:'#6b7280',padding:12,usePointStyle:true,pointStyleWidth:8}}}}});
 }
 
-function getData(){return JSON.parse(localStorage.getItem('sys_quality')||'[]');}
-function saveData(arr){localStorage.setItem('sys_quality',JSON.stringify(arr));}
+function updateCharts(){
+  var notDue=data.filter(function(d){return d.status==='未到期'}).reduce(function(s,d){return s+parseFloat(d.amount||0)},0);
+  var soon=data.filter(function(d){return d.status==='即将到期'}).reduce(function(s,d){return s+parseFloat(d.amount||0)},0);
+  var expired=data.filter(function(d){return d.status==='已到期'}).reduce(function(s,d){return s+parseFloat(d.amount||0)},0);
+  var returned=data.filter(function(d){return d.status==='已退还'}).reduce(function(s,d){return s+parseFloat(d.amount||0)},0);
+  var total=data.reduce(function(s,d){return s+parseFloat(d.amount||0)},0);
 
-function getStatus(row){
-  if(!row.warrantyEnd||row.warrantyEnd==='-')return{cls:'status-pending',txt:'—'};
-  if(row.returnDate&&row.returnDate!=='-'&&!row.returnDate.includes('预计'))return{cls:'status-done',txt:'已退还'};
-  if(new Date(row.warrantyEnd)<new Date())return{cls:'status-pending',txt:'已到期'};
-  return{cls:'status-active',txt:'进行中'};
+  barChart.data.labels=['未到期','即将到期','已到期','已退还'];
+  barChart.data.datasets[0].data=[notDue,soon,expired,returned];
+  barChart.data.datasets[0].backgroundColor=['#2563eb','#ca8a04','#dc2626','#16a34a'];
+  barChart.update();
+
+  pieChart.data.labels=['未到期','即将到期','已到期','已退还'];
+  pieChart.data.datasets[0].data=[notDue||1,soon||0,expired||0,returned||0];
+  pieChart.data.datasets[0].backgroundColor=['#2563eb','#ca8a04','#dc2626','#16a34a'];
+  pieChart.update();
+
+  var notDueCount=data.filter(function(d){return d.status==='未到期'}).length;
+  var soonCount=data.filter(function(d){return d.status==='即将到期'}).length;
+  var expiredCount=data.filter(function(d){return d.status==='已到期'}).length;
+  var returnedCount=data.filter(function(d){return d.status==='已退还'}).length;
+  document.getElementById('statsRow').innerHTML=''+
+    '<div class="stat-card"><div class="stat-label">项目总数</div><div class="stat-value">'+data.length+'</div><div class="stat-sub">质保金总金额 '+total.toFixed(1)}万</div></div>'+
+    '<div class="stat-card"><div class="stat-label">未到期</div><div class="stat-value" style="color:#2563eb">'+notDueCount+'</div><div class="stat-sub">'+notDue.toFixed(1)}万</div></div>'+
+    '<div class="stat-card"><div class="stat-label">即将到期</div><div class="stat-value" style="color:#ca8a04">'+soonCount+'</div><div class="stat-sub">'+soon.toFixed(1)}万</div></div>'+
+    '<div class="stat-card"><div class="stat-label">已到期</div><div class="stat-value" style="color:#dc2626">'+expiredCount+'</div><div class="stat-sub">'+expired.toFixed(1)}万</div></div>'+
+    '<div class="stat-card"><div class="stat-label">已退还</div><div class="stat-value" style="color:#16a34a">'+returnedCount+'</div><div class="stat-sub">'+returned.toFixed(1)}万</div></div>';
 }
 
-function fmt(v){if(!v||v==='-')return'-';if(typeof v==='number')return'¥'+v.toLocaleString();return v;}
-
-function buildStats(){
-  const d=getData();
-  const active=d.filter(x=>getStatus(x).cls==='status-active').length;
-  const done=d.filter(x=>getStatus(x).cls==='status-done').length;
-  const qualityTotal=d.filter(x=>x.warrantyAmount&&x.warrantyAmount!=='已结清'&&x.warrantyAmount!=='-').reduce((a,b)=>{const v=parseFloat(String(b.warrantyAmount).replace(/[^0-9.]/g,''));return a+(isNaN(v)?0:v);},0);
-  document.getElementById('statsBar').innerHTML=`
-    <div class="stat-mini"><div class="stat-mini-label">记录总数</div><div class="stat-mini-val">${d.length}</div></div>
-    <div class="stat-mini"><div class="stat-mini-label">进行中</div><div class="stat-mini-val" style="color:#00cc66">${active}</div></div>
-    <div class="stat-mini"><div class="stat-mini-label">已退还</div><div class="stat-mini-val" style="color:var(--cyan)">${done}</div></div>
-    <div class="stat-mini"><div class="stat-mini-label">质保金总额</div><div class="stat-mini-val">¥${qualityTotal.toLocaleString()}</div></div>`;
-}
-
-function buildCharts(){
-  const d=getData();
-  const top=d.filter(x=>x.contractAmount&&x.contractAmount!=='-'&&+x.contractAmount>0).sort((a,b)=>+(b.contractAmount||0)-(+(a.contractAmount||0))).slice(0,6);
-  const labels=top.map(x=>x.projectName.length>10?x.projectName.slice(0,10)+'…':x.projectName);
-  const amounts=top.map(x=>+(x.contractAmount||0));
-  const counts={进行中:0,已退还:0,其他:0};
-  d.forEach(x=>{const s=getStatus(x).txt;counts[s==='进行中'?'进行中':s==='已退还'?'已退还':'其他']++;});
-
-  if(window.barChartInst)window.barChartInst.destroy();
-  if(window.donutChartInst)window.donutChartInst.destroy();
-  window.barChartInst=new Chart(document.getElementById('barChart').getContext('2d'),{
-    type:'bar',
-    data:{labels,datasets:[{label:'合同金额(元)',data:amounts,backgroundColor:'rgba(0,136,255,0.7)',borderColor:'rgba(0,200,255,0.8)',borderWidth:1,borderRadius:6}]},
-    options:{responsive:true,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'rgba(255,255,255,0.5)',font:{size:10}},grid:{color:'rgba(0,100,255,0.08)'}},y:{ticks:{color:'rgba(255,255,255,0.5)'},grid:{color:'rgba(0,100,255,0.08)'}}},animation:{duration:1200}}
+function render(){
+  var fs=document.getElementById('filterStatus').value;
+  var ft=document.getElementById('filterType').value;
+  var kw=document.getElementById('searchInput').value.trim().toLowerCase();
+  var filtered=data.filter(function(d){
+    return(!fs||d.status===fs)&&(!ft||d.type===ft)&&(!kw||(d.project+''+d.customer+''+d.remark).toLowerCase().includes(kw));
   });
-  window.donutChartInst=new Chart(document.getElementById('donutChart').getContext('2d'),{
-    type:'doughnut',
-    data:{labels:['进行中','已退还','其他'],datasets:[{data:[counts['进行中'],counts['已退还'],counts['其他']],backgroundColor:['rgba(0,204,100,0.8)','rgba(0,150,255,0.8)','rgba(255,180,0,0.8)'],borderWidth:2,borderColor:'rgba(2,6,23,0.8)'}]},
-    options:{responsive:true,plugins:{legend:{position:'bottom',labels:{color:'rgba(255,255,255,0.7)',padding:16}}},cutout:'55%',animation:{duration:1200}}
-  });
+  var totalPages=Math.max(1,Math.ceil(filtered.length/pageSize));
+  if(currentPage>totalPages)currentPage=totalPages;
+  var start=(currentPage-1)*pageSize;
+  var page=filtered.slice(start,start+pageSize);
+  var statusMap={'未到期':'badge-blue','即将到期':'badge-yellow','已到期':'badge-red','已退还':'badge-green'};
+  document.getElementById('tableBody').innerHTML=page.length?page.map(function(d,i){
+    return'<tr><td>'+(start+i+1)+'</td><td title="'+esc(d.project)+'">'+esc(d.project)+'</td><td>'+esc(d.customer)+'</td><td>'+esc(d.signDate)+'</td><td>'+esc(d.expireDate)+'</td><td style="font-weight:600">'+parseFloat(d.amount||0).toFixed(2)+'</td><td><span class="badge badge-gray">'+esc(d.type)+'</span></td><td><span class="badge '+(statusMap[d.status]||'badge-gray')+'">'+esc(d.status)+'</span></td><td><button class="action-btn action-edit" onclick="editRecord(\''+d.id+'\')">编辑</button><button class="action-btn action-del" onclick="delRecord(\''+d.id+'\')">删除</button></td></tr>';
+  }).join(''):'<tr><td colspan="9" class="empty-state"><p>暂无数据，点击右上角"+ 新增记录"添加</p></td></tr>';
+  document.getElementById('pageInfo').textContent='共 '+filtered.length+' 条，第 '+currentPage+' / '+totalPages+' 页';
+  var btns='';
+  btns+='<button class="pagination-btn" onclick="goPage('+(currentPage-1)+')" '+(currentPage===1?'disabled':'')+'>上一页</button>';
+  for(var p=1;p<=totalPages;p++){if(totalPages<=7||p===1||p===totalPages||Math.abs(p-currentPage)<=2){btns+='<button class="pagination-btn'+(p===currentPage?' active':'')+'" onclick="goPage('+p+')">'+p+'</button>';}}
+  btns+='<button class="pagination-btn" onclick="goPage('+(currentPage+1)+')" '+(currentPage===totalPages?'disabled':'')+'>下一页</button>';
+  document.getElementById('pageBtns').innerHTML=btns;
 }
 
-function renderTable(){
-  const kw=document.getElementById('searchInput').value.trim().toLowerCase();
-  const sf=document.getElementById('statusFilter').value;
-  allData=getData().filter(x=>{
-    const mk=!kw||(x.projectName||'').toLowerCase().includes(kw)||(x.userName||'').toLowerCase().includes(kw)||(x.contact||'').toLowerCase().includes(kw);
-    let ms=true;
-    if(sf==='active')ms=getStatus(x).cls==='status-active';
-    else if(sf==='done')ms=getStatus(x).cls==='status-done';
-    return mk&&ms;
-  }).sort((a,b)=>(b.id||0)-(a.id||0));
-  const tp=Math.max(1,Math.ceil(allData.length/PAGE_SIZE));
-  if(currentPage>tp)currentPage=tp;
-  const pd=allData.slice((currentPage-1)*PAGE_SIZE,currentPage*PAGE_SIZE);
-  document.getElementById('tableBody').innerHTML=pd.length?pd.map(x=>{const s=getStatus(x);return`<tr>
-    <td>${x.id}</td>
-    <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${x.projectName}">${x.projectName}</td>
-    <td>${x.userName||'-'}</td><td>${x.warrantyYears||'-'}年</td><td>${x.warrantyEnd||'-'}</td>
-    <td>${fmt(x.contractAmount)}</td><td>${fmt(x.warrantyAmount)}</td><td>${x.returnDate||'-'}</td>
-    <td><span class="status-badge ${s.cls}">${s.txt}</span></td>
-    <td><div class="action-btns"><button class="action-btn" onclick="editRecord(${x.id})">编辑</button><button class="action-btn danger" onclick="delRecord(${x.id})">删除</button></div></td>
-  </tr>`;}).join(''):'<tr class="empty-row"><td colspan="10">暂无数据</td></tr>';
-  buildPagination();
-}
+function goPage(p){currentPage=p;render();}
 
-function buildPagination(){
-  const tp=Math.max(1,Math.ceil(allData.length/PAGE_SIZE));
-  if(tp<=1){document.getElementById('pagination').innerHTML='';return;}
-  document.getElementById('pagination').innerHTML=Array.from({length:tp},(_,i)=>`<button class="page-btn ${i+1===currentPage?'active':''}" onclick="goPage(${i+1})">${i+1}</button>`).join('');
-}
-function goPage(n){currentPage=n;renderTable();}
-
-function openAddModal(){document.getElementById('modalTitle').textContent='新增记录';document.getElementById('recordForm').reset();document.getElementById('editId').value='';document.getElementById('modal').classList.add('show');}
-function editRecord(id){const d=getData().find(x=>x.id===id);if(!d)return;document.getElementById('modalTitle').textContent='编辑记录';document.getElementById('editId').value=id;FIELDS.forEach(f=>{const el=document.getElementById('f_'+f);if(el)el.value=d[f]||''});document.getElementById('modal').classList.add('show');}
-function closeModal(){document.getElementById('modal').classList.remove('show');}
-
-function saveRecord(e){
-  e.preventDefault();
-  const id=document.getElementById('editId').value;
-  const rec={};
-  FIELDS.forEach(f=>{const el=document.getElementById('f_'+f);rec[f]=el?el.value:''});
-  rec.id=id?+id:getMaxId();
-  const d=getData();
-  if(id){const idx=d.findIndex(x=>x.id===+id);if(idx>-1)d[idx]={...d[idx],...rec};}
-  else d.unshift(rec);
-  saveData(d);
-  closeModal();
-  buildStats();buildCharts();renderTable();
-  showToast(id?'记录已更新':'新增成功');
-}
-function getMaxId(){const d=getData();return d.length?Math.max(...d.map(x=>x.id||0))+1:1;}
-function delRecord(id){if(!confirm('确认删除这条记录？'))return;saveData(getData().filter(x=>x.id!==id));buildStats();buildCharts();renderTable();showToast('已删除','error');}
-
-function exportData(){
-  const d=getData();
-  const csv=['序号,项目名称,用户名称,合同签订时间,质保开始时间,质保期,质保结束时间,合同金额,质保金,退还日期,联系人,电话,备注'];
-  d.forEach(x=>{csv.push(`${x.id||''},"${x.projectName||''}","${x.userName||''}","${x.signDate||''}","${x.warrantyStart||''}",${x.warrantyYears||''},"${x.warrantyEnd||''}",${x.contractAmount||''},"${x.warrantyAmount||''}","${x.returnDate||''}","${x.contact||''}","${x.phone||''}","${x.remark||''}"`);});
-  const blob=new Blob([csv.join('\n')],{type:'text/csv;charset=utf-8;'});
-  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='质保金数据.csv';a.click();
-  showToast('导出成功');
-}
-
-function updateTime(){
-  const now=new Date();
-  document.getElementById('topbarTime').textContent=now.getFullYear()+'/'+(now.getMonth()+1).toString().padStart(2,'0')+'/'+now.getDate().toString().padStart(2,'0')+'  '+now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0');
-}
-function makeStars(){
-  const el=document.getElementById('stars');
-  for(let i=0;i<60;i++){
-    const s=document.createElement('div');s.className='star';
-    s.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${2+Math.random()*4}s;animation-delay:${Math.random()*4}s`;
-    el.appendChild(s);
+function openModal(id){
+  editingId=id;
+  document.getElementById('modal').classList.add('active');
+  document.getElementById('modalTitle').textContent=id?'编辑质保金记录':'新增质保金记录';
+  if(id){
+    var d=data.find(function(x){return x.id===id;});
+    if(d){document.getElementById('f_project').value=d.project||'';document.getElementById('f_customer').value=d.customer||'';document.getElementById('f_signDate').value=d.signDate||'';document.getElementById('f_expireDate').value=d.expireDate||'';document.getElementById('f_amount').value=d.amount||'';document.getElementById('f_type').value=d.type||'系统集成';document.getElementById('f_status').value=d.status||'未到期';document.getElementById('f_remark').value=d.remark||'';}
+  } else {
+    ['f_project','f_customer','f_signDate','f_expireDate','f_amount','f_remark'].forEach(function(id){document.getElementById(id).value='';});
+    document.getElementById('f_type').value='系统集成';
+    document.getElementById('f_status').value='未到期';
   }
 }
-window.addEventListener('DOMContentLoaded',()=>{checkAuth();makeStars();buildStats();buildCharts();renderTable();updateTime();setInterval(updateTime,30000);});
+
+function closeModal(){document.getElementById('modal').classList.remove('active');editingId=null;}
+
+function saveRecord(){
+  var project=document.getElementById('f_project').value.trim();
+  var customer=document.getElementById('f_customer').value.trim();
+  var signDate=document.getElementById('f_signDate').value;
+  var expireDate=document.getElementById('f_expireDate').value;
+  var amount=document.getElementById('f_amount').value;
+  var type=document.getElementById('f_type').value;
+  var status=document.getElementById('f_status').value;
+  var remark=document.getElementById('f_remark').value.trim();
+  if(!project||!customer||!signDate||!expireDate||!amount){alert('请填写必填项');return;}
+  var record={id:editingId||Date.now().toString(),project:project,customer:customer,signDate:signDate,expireDate:expireDate,amount:amount,type:type,status:status,remark:remark};
+  if(editingId){for(var i=0;i<data.length;i++){if(data[i].id===editingId){data[i]=record;break;}}}
+  else{data.unshift(record);}
+  localStorage.setItem('qualityData',JSON.stringify(data));
+  updateCharts();render();closeModal();
+}
+
+function editRecord(id){openModal(id);}
+
+function delRecord(id){
+  if(!confirm('确定删除？'))return;
+  data=data.filter(function(d){return d.id!==id;});
+  localStorage.setItem('qualityData',JSON.stringify(data));
+  updateCharts();render();
+}
+
+function exportCSV(){
+  var csv='项目名称,客户单位,签订日期,质保到期日,质保金额(万),类型,状态,备注\n';
+  data.forEach(function(d){csv+='"'+d.project+'","'+d.customer+'","'+d.signDate+'","'+d.expireDate+'","'+d.amount+'","'+d.type+'","'+d.status+'","'+(d.remark||'')+'"\n';});
+  var blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'});
+  var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='质保金统计_'+new Date().toISOString().slice(0,10)+'.csv';a.click();
+}
+
+function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+initCharts();updateCharts();render();
 </script>
 </body>
 </html>
